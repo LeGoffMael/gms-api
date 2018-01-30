@@ -1,0 +1,35 @@
+AppBundle\Entity\Image:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: url
+    properties:
+        url:
+            - NotBlank: ~
+            - NotNull: ~
+            - Type: string
+        date:
+            - Type: datetime
+            - NotBlank: ~
+        score:
+            - Type: integer
+            - NotBlank: ~
+        description:
+            - Type: string
+AppBundle\Entity\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string
+        urlImage:
+            - NotBlank: ~
+            - Type: string
+        parent:
+            - Type: AppBundle\Entity\Category
+AppBundle\Entity\Tag:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string

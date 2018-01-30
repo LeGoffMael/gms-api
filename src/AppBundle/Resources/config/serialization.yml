@@ -1,0 +1,46 @@
+﻿AppBundle\Entity\Category:
+    attributes:
+        id:
+            groups: ['category', 'parent', 'children', 'image']
+        name:
+            groups: ['category', 'parent', 'children', 'image']
+        urlImage:
+            groups: ['category', 'parent', 'children', 'image']
+        childrens:
+            groups: ['children']
+        parent:
+            groups: ['parent']
+AppBundle\Entity\Category:
+    attributes:
+        id:
+            groups: ['category', 'parent', 'children', 'image']
+        name:
+            groups: ['category', 'parent', 'children', 'image']
+        urlImage:
+            groups: ['category', 'parent', 'children', 'image']
+        childrens:
+            groups: ['children']
+        parent:
+            groups: ['parent']
+AppBundle\Entity\Tag:
+    attributes:
+        id:
+            groups: ['tag', 'image']
+        name:
+            groups: ['tag', 'image']
+AppBundle\Entity\Image:
+    attributes:
+        id:
+            groups: ['image']
+        url:
+            groups: ['image']
+        date:
+            groups: ['image']
+        score:
+            groups: ['image']
+        description:
+            groups: ['image']
+        categories:
+            groups: ['image']
+        tags:
+            groups: ['image']

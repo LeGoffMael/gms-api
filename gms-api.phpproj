@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>gms-api</Name>
+    <ProjectGuid>{a68341e3-754d-4186-9e01-067abaa73d54}</ProjectGuid>
+    <RootNamespace>
+    </RootNamespace>
+    <OutputType>Library</OutputType>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="app\config\config.yml" />
+    <Compile Include="app\config\config_dev.yml" />
+    <Compile Include="app\config\config_prod.yml" />
+    <Compile Include="app\config\config_test.yml" />
+    <Compile Include="app\config\parameters.yml" />
+    <Compile Include="app\config\parameters.yml.dist" />
+    <Compile Include="app\config\routing.yml" />
+    <Compile Include="app\config\routing_dev.yml" />
+    <Compile Include="app\config\security.yml" />
+    <Compile Include="app\config\services.yml" />
+    <Compile Include="app\Resources\views\default\index.html.twig" />
+    <Compile Include="app\Resources\views\base.html.twig" />
+    <Compile Include="app\.htaccess" />
+    <Compile Include="app\AppCache.php" />
+    <Compile Include="app\AppKernel.php" />
+    <Compile Include="app\autoload.php" />
+    <Compile Include="bin\console" />
+    <Compile Include="bin\symfony_requirements" />
+    <Compile Include="src\AppBundle\Controller\TagController.php" />
+    <Compile Include="src\AppBundle\Controller\CategoryController.php" />
+    <Compile Include="src\AppBundle\Controller\DefaultController.php" />
+    <Compile Include="src\AppBundle\Controller\ImageController.php" />
+    <Compile Include="src\AppBundle\Entity\Role.php" />
+    <Compile Include="src\AppBundle\Entity\User.php" />
+    <Compile Include="src\AppBundle\Entity\Tag.php" />
+    <Compile Include="src\AppBundle\Entity\Category.php" />
+    <Compile Include="src\AppBundle\Entity\Image.php" />
+    <Compile Include="src\AppBundle\AppBundle.php" />
+    <Compile Include="src\.htaccess" />
+    <Compile Include="src\AppBundle\Form\Type\TagType.php" />
+    <Compile Include="src\AppBundle\Form\Type\ImageType.php" />
+    <Compile Include="src\AppBundle\Form\Type\CategoryType.php" />
+    <Compile Include="tests\AppBundle\Controller\DefaultControllerTest.php" />
+    <Compile Include="var\cache\dev\appDevDebugProjectContainer.php" />
+    <Compile Include="var\cache\dev\appDevDebugProjectContainer.php.meta" />
+    <Compile Include="var\cache\dev\appDevDebugProjectContainer.xml" />
+    <Compile Include="var\cache\dev\appDevDebugProjectContainerCompiler.log" />
+    <Compile Include="var\cache\dev\classes.map" />
+    <Compile Include="var\cache\.gitkeep" />
+    <Compile Include="var\logs\.gitkeep" />
+    <Compile Include="var\logs\dev.log" />
+    <Compile Include="var\sessions\.gitkeep" />
+    <Compile Include="var\bootstrap.php.cache" />
+    <Compile Include="var\SymfonyRequirements.php" />
+    <Compile Include="web\bundles\framework\css\body.css" />
+    <Compile Include="web\bundles\framework\css\exception.css" />
+    <Compile Include="web\bundles\framework\css\structure.css" />
+    <Compile Include="web\bundles\framework\images\blue_picto_less.gif" />
+    <Compile Include="web\bundles\framework\images\blue_picto_more.gif" />
+    <Compile Include="web\bundles\framework\images\grey_magnifier.png" />
+    <Compile Include="web\bundles\framework\images\logo_symfony.png" />
+    <Compile Include="web\.htaccess" />
+    <Compile Include="web\app.php" />
+    <Compile Include="web\apple-touch-icon.png" />
+    <Compile Include="web\app_dev.php" />
+    <Compile Include="web\config.php" />
+    <Compile Include="web\favicon.ico" />
+    <Compile Include="web\robots.txt" />
+    <Compile Include=".gitignore" />
+    <Compile Include="composer.json" />
+    <Compile Include="composer.lock" />
+    <Compile Include="LICENSE" />
+    <Compile Include="phpunit.xml.dist" />
+    <Compile Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\config" />
+    <Folder Include="app\Resources\views\default" />
+    <Folder Include="app\Resources\views" />
+    <Folder Include="app\Resources" />
+    <Folder Include="app" />
+    <Folder Include="bin" />
+    <Folder Include="src\AppBundle\Controller" />
+    <Folder Include="src\AppBundle\Entity" />
+    <Folder Include="src\AppBundle" />
+    <Folder Include="src" />
+    <Folder Include="src\AppBundle\Form\" />
+    <Folder Include="src\AppBundle\Form\Type\" />
+    <Folder Include="src\AppBundle\Resources\" />
+    <Folder Include="src\AppBundle\Resources\config\" />
+    <Folder Include="tests\AppBundle\Controller" />
+    <Folder Include="tests\AppBundle" />
+    <Folder Include="tests" />
+    <Folder Include="var\cache\dev\annotations" />
+    <Folder Include="var\cache\dev\doctrine\orm\Proxies" />
+    <Folder Include="var\cache\dev\doctrine\orm" />
+    <Folder Include="var\cache\dev\doctrine" />
+    <Folder Include="var\cache\dev" />
+    <Folder Include="var\cache" />
+    <Folder Include="var\logs" />
+    <Folder Include="var\sessions\dev" />
+    <Folder Include="var\sessions" />
+    <Folder Include="var" />
+    <Folder Include="web\bundles\framework\css" />
+    <Folder Include="web\bundles\framework\images" />
+    <Folder Include="web\bundles\framework" />
+    <Folder Include="web\bundles" />
+    <Folder Include="web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\AppBundle\Resources\config\serialization.yml" />
+    <Content Include="src\AppBundle\Resources\config\validation.yml" />
+  </ItemGroup>
+</Project>

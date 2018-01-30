@@ -1,0 +1,15 @@
+app:
+    resource: "@AppBundle/Controller/DefaultController.php"
+    type:     annotation
+
+images:
+    type:     rest
+    resource: AppBundle\Controller\ImageController
+
+categories:
+    type:     rest
+    resource: AppBundle\Controller\CategoryController
+
+tags:
+    type:     rest
+    resource: AppBundle\Controller\TagController
