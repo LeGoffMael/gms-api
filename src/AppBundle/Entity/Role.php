@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Role description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author MaÃ«l Le Goff
  * @ORM\Entity()
  * @ORM\Table(name="roles",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="roles_name_unique",columns={"nameRole"})}
@@ -30,7 +30,7 @@ class Role {
     protected $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="roles")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="role")
      * @var User[]
      */
     protected $users;

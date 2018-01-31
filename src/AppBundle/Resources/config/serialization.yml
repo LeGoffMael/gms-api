@@ -1,4 +1,4 @@
-﻿AppBundle\Entity\Category:
+AppBundle\Entity\Category:
     attributes:
         id:
             groups: ['category', 'parent', 'children', 'image']
@@ -44,3 +44,29 @@ AppBundle\Entity\Image:
             groups: ['image']
         tags:
             groups: ['image']
+AppBundle\Entity\User:
+    attributes:
+        id:
+            groups: ['user']
+        name:
+            groups: ['user']
+        email:
+            groups: ['user']
+        password:
+            groups: ['user']
+        hashValidation:
+            groups: ['user']
+        forgetPass:
+            groups: ['user']
+        dateCreation:
+            groups: ['user']
+        dateLastModification:
+            groups: ['user']
+        role:
+            groups: ['user']
+AppBundle\Entity\Role:
+    attributes:
+        id:
+            groups: ['role', 'user']
+        name:
+            groups: ['role', 'user']

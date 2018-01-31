@@ -13,3 +13,11 @@ categories:
 tags:
     type:     rest
     resource: AppBundle\Controller\TagController
+    
+roles:
+    type:     rest
+    resource: AppBundle\Controller\RoleController
+    
+users:
+    type:     rest
+    resource: AppBundle\Controller\UserController

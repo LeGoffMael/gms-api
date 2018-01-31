@@ -33,3 +33,40 @@ AppBundle\Entity\Tag:
         name:
             - NotBlank: ~
             - Type: string
+AppBundle\Entity\User:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: hashValidation
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: forgetPass
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string
+        email:
+            - NotBlank: ~
+            - Email: ~
+        password:
+            - NotBlank: ~
+            - Type: string
+        hashValidation:
+            - NotBlank: ~
+            - Type: string
+        forgetPass:
+            - NotBlank: ~
+            - Type: string
+        dateCreation:
+            - Type: datetime
+            - NotBlank: ~
+        dateLastModification:
+            - Type: datetime
+            - NotBlank: ~
+        role:
+            - Type: AppBundle\Entity\Role
+AppBundle\Entity\Role:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string

@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  * User description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author Maï¿½l Le Goff
  * @ORM\Entity()
  * @ORM\Table(name="users",
- *            uniqueConstraints={@ORM\UniqueConstraint(name="users_name_mail_unique",columns={"nameUser","mailUser"})}
+ *            uniqueConstraints={@ORM\UniqueConstraint(name="users_name_mail_unique",columns={"nameUser","emailUser","hashValidationUser","forgetPassUser"})}
  * )
  */
 class User {
@@ -29,9 +29,9 @@ class User {
     protected $name;
 
     /**
-     * @ORM\Column(type="string", name="mailUser")
+     * @ORM\Column(type="string", name="emailUser")
      */
-    protected $mail;
+    protected $email;
 
     /**
      * @ORM\Column(type="string", name="passwordUser")
@@ -60,7 +60,8 @@ class User {
     protected $dateLastModification;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinColumn(name="idRole", referencedColumnName="idRole")
      * @var Role
      */
     protected $role;
@@ -83,12 +84,12 @@ class User {
         return $this;
     }
 
-    public function getMail() {
-        return $this->mail;
+    public function getEmail() {
+        return $this->email;
     }
 
-    public function setMail($mail) {
-        $this->mail = $mail;
+    public function setEmail($email) {
+        $this->email = $email;
     }
 
     public function getPassword() {
@@ -119,7 +120,7 @@ class User {
         return $this->forgetPass;
     }
 
-    public function set($forgetPass) {
+    public function setForgetPass($forgetPass) {
         $this->forgetPass = $forgetPass;
     }
 
@@ -129,5 +130,14 @@ class User {
 
     public function setDateLastModification($dateLastModification) {
         $this->dateLastModification = $dateLastModification;
+    }
+    
+    public function getRole() {
+        return $this->role;
+    }
+    
+    public function setRole($role) {
+        $this->role = $role;
+        return $this;
     }
 }

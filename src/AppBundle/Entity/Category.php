@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Category description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author Maï¿½l Le Goff
  * @ORM\Entity()
  * @ORM\Table(name="categories",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="categories_name_unique",columns={"nameCategory"})}
@@ -158,5 +158,9 @@ class Category {
      */
     public function getImages() {
         return $this->images;
+    }
+    
+    public function getNbImages() {
+        return count($this->images);
     }
 }

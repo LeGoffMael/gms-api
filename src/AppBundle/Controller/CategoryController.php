@@ -16,7 +16,7 @@ use AppBundle\Entity\Category;
  * CategoryController description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author Maï¿½l Le Goff
  */
 class CategoryController extends Controller {
 
@@ -66,7 +66,7 @@ class CategoryController extends Controller {
     public function getParentAction(Request $request) {
         $category = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Category')
-                ->find($request->get('id')); // L'identifiant en tant que paramétre n'est plus nécessaire
+                ->find($request->get('id')); // L'identifiant en tant que paramï¿½tre n'est plus nï¿½cessaire
         /* @var $category Category */
 
         if (empty($category)) {
@@ -143,7 +143,7 @@ class CategoryController extends Controller {
             $data['parent'] = $request->get('parent');
         }
 
-        $form->submit($data); // Validation des données
+        $form->submit($data); // Validation des donnï¿½es
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
