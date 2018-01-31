@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\TagType;
@@ -57,32 +57,32 @@ class TagController extends Controller {
     }
 
     /**
-     * All Images of the Tag
-     * @Rest\View(serializerGroups={"image"})
-     * @Rest\Get("/tags/{id}/images")
+     * All Tags of the Image
+     * @Rest\View(serializerGroups={"tag"})
+     * @Rest\Get("/images/{id}/tags")
      * @param Request $request
      * @return mixed
      */
-    public function getTagImagesAction(Request $request) {
-        $tag = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Tag')
+    public function getImagesTagsAction(Request $request) {
+        $image = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Image')
                 ->find($request->get('id'));
-        /* @var $tag Tag */
+        /* @var $image Image */
 
-        if (empty($tag)) {
-            return $this->tagNotFound();
+        if (empty($image)) {
+            return $this->imageNotFound();
         }
 
-        $images = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Image')
-                ->createQueryBuilder('i')
-                ->join('i.tags', 't')
-                ->where('t.id = :id_tag')
-                ->setParameter('id_tag', $request->get('id'))
+        $tags = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Tag')
+                ->createQueryBuilder('t')
+                ->join('t.images', 'i')
+                ->where('i.id = :id_img')
+                ->setParameter('id_img', $request->get('id'))
                 ->getQuery()->getResult();
-        /* @var $images Image[] */
+        /* @var $tags Tag[] */
 
-        return $images;
+        return $tags;
     }
 
     /**
@@ -96,10 +96,7 @@ class TagController extends Controller {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
 
-        $data = array();
-        $data['name'] = $request->get('name');
-
-        $form->submit($data); // Validation des données
+        $form->submit($request->request->all()); // Data validation
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -116,7 +113,7 @@ class TagController extends Controller {
      * @Rest\View(serializerGroups={"tag"})
      * @Rest\Put("/tags/{id}")
      */
-    public function updateTagAction(Request $request) {
+    public function putTagAction(Request $request) {
         return $this->updateTag($request, true);
     }
 
@@ -149,12 +146,10 @@ class TagController extends Controller {
 
         $form = $this->createForm(TagType::class, $tag);
 
-        //TODO
-        /* generate the receive datas, normaly just with $request->request->all() but always empty */
-        $data = array();
-        if($request->get('name') != null)
-            $data['name'] = $request->get('name');
-        $form->submit($data, $clearMissing);
+        // The false parameter tells Symfony
+        // to keep the values in our entity
+        // if the user does not supply one in a query
+        $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');

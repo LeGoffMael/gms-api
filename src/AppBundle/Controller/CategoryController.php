@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\CategoryType;
@@ -16,7 +16,7 @@ use AppBundle\Entity\Category;
  * CategoryController description.
  *
  * @version 1.0
- * @author Ma�l Le Goff
+ * @author Maël Le Goff
  */
 class CategoryController extends Controller {
 
@@ -60,7 +60,7 @@ class CategoryController extends Controller {
      * All Images of the Category
      * @Rest\View(serializerGroups={"category"})
      * @Rest\Get("/categories/{id}/parent")
-     * @param Request $request 
+     * @param Request $request
      * @return mixed
      */
     public function getParentAction(Request $request) {
@@ -80,7 +80,7 @@ class CategoryController extends Controller {
      * All the childrens of the categories
      * @Rest\View(serializerGroups={"children"})
      * @Rest\Get("/categories/{id}/childrens")
-     * @param Request $request 
+     * @param Request $request
      * @return mixed
      */
     public function getChildrensAction(Request $request) {
@@ -97,34 +97,34 @@ class CategoryController extends Controller {
     }
 
     /**
-     * All Images of the Category
-     * @Rest\View(serializerGroups={"image"})
-     * @Rest\Get("/categories/{id}/images")
-     * @param Request $request 
+     * All Categories of the Image
+     * @Rest\View(serializerGroups={"category"})
+     * @Rest\Get("/images/{id}/categories")
+     * @param Request $request
      * @return mixed
      */
-    public function getCategoriesImagesAction(Request $request) {
-        $category = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Category')
+    public function getImagesCategoriesAction(Request $request) {
+        $image = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Image')
                 ->find($request->get('id'));
-        /* @var $category Category */
-    
-        if (empty($category)) {
-            return $this->categoryNotFound();
+        /* @var $image Image */
+
+        if (empty($image)) {
+            return $this->imageNotFound();
         }
 
-        $images = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Image')
-                ->createQueryBuilder('i')
-                ->join('i.categories', 'c')
-                ->where('c.id = :id_categ')
-                ->setParameter('id_categ', $request->get('id'))
+        $categories = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Category')
+                ->createQueryBuilder('c')
+                ->join('c.images', 'i')
+                ->where('i.id = :id_img')
+                ->setParameter('id_img', $request->get('id'))
                 ->getQuery()->getResult();
-        /* @var $images Image[] */
-    
-        return $images;
+        /* @var $categories Category[] */
+
+        return $categories;
     }
-    
+
     /**
      * Insert new Category
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"category"})
@@ -136,14 +136,7 @@ class CategoryController extends Controller {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
 
-        $data = array();
-        $data['name'] = $request->get('name');
-        $data['urlImage'] = $request->get('urlImage');
-        if($request->get('parent') != null) {
-            $data['parent'] = $request->get('parent');
-        }
-
-        $form->submit($data); // Validation des donn�es
+        $form->submit($request->request->all()); // Data validation
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -160,7 +153,7 @@ class CategoryController extends Controller {
      * @Rest\View(serializerGroups={"category"})
      * @Rest\Put("/categories/{id}")
      */
-    public function updateCategoryAction(Request $request) {
+    public function putCategoryAction(Request $request) {
         return $this->updateCategory($request, true);
     }
 
@@ -193,17 +186,10 @@ class CategoryController extends Controller {
 
         $form = $this->createForm(CategoryType::class, $category);
 
-        //TODO
-        /* generate the receive datas, normaly just with $request->request->all() but always empty */
-        $data = array();
-        if($request->get('name') != null)
-            $data['name'] = $request->get('name');
-        if($request->get('urlImage') != null)
-            $data['urlImage'] = $request->get('urlImage');
-        if($request->get('parent') != null) {
-            $data['parent'] = $request->get('parent');
-        }
-        $form->submit($data, $clearMissing);
+        // The false parameter tells Symfony
+        // to keep the values in our entity
+        // if the user does not supply one in a query
+        $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');

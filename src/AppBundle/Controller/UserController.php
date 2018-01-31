@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\UserType;
@@ -16,7 +16,7 @@ use AppBundle\Entity\User;
  * UserController description.
  *
  * @version 1.0
- * @author Ma�l Le Goff
+ * @author Maël Le Goff
  */
 class UserController extends Controller {
 
@@ -67,9 +67,7 @@ class UserController extends Controller {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
-        //TODO
-
-        $form->submit($data); // Validation des donn�es
+        $form->submit($request->request->all()); // Data validation
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -86,7 +84,7 @@ class UserController extends Controller {
      * @Rest\View(serializerGroups={"user"})
      * @Rest\Put("/users/{id}")
      */
-    public function updateUserAction(Request $request) {
+    public function putUserAction(Request $request) {
         return $this->updateUser($request, true);
     }
 
@@ -119,7 +117,10 @@ class UserController extends Controller {
 
         $form = $this->createForm(UserType::class, $user);
 
-        //TODO
+        // The false parameter tells Symfony
+        // to keep the values in our entity
+        // if the user does not supply one in a query
+        $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');

@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\RoleType;
@@ -55,7 +55,7 @@ class RoleController extends Controller {
 
         return $role;
     }
-    
+
     /**
      * Insert new Role
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"role"})
@@ -66,12 +66,9 @@ class RoleController extends Controller {
     public function postRoleAction(Request $request) {
         $role = new Role();
         $form = $this->createForm(RoleType::class, $role);
-        
-        $data = array();
-        $data['name'] = $request->get('name');
-        
-        $form->submit($data); // Validation des donn�es
-        
+
+        $form->submit($request->request->all()); // Data validation
+
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($role);
@@ -81,16 +78,16 @@ class RoleController extends Controller {
             return $form;
         }
     }
-    
+
     /**
      * Full Update Role with the specified id
      * @Rest\View(serializerGroups={"role"})
      * @Rest\Put("/roles/{id}")
      */
-    public function updateRoleAction(Request $request) {
+    public function putRoleAction(Request $request) {
         return $this->updateRole($request, true);
     }
-    
+
     /**
      * Partial Update Role with the specified id
      * @Rest\View(serializerGroups={"role"})
@@ -101,7 +98,7 @@ class RoleController extends Controller {
     public function patchRoleAction(Request $request) {
         return $this->updateRole($request, false);
     }
-    
+
     /**
      * Complete or Partial Update Role with the specified id
      * @param Request $request
@@ -113,30 +110,28 @@ class RoleController extends Controller {
         ->getRepository('AppBundle:Role')
         ->find($request->get('id'));
         /* @var $role Role */
-        
+
         if (empty($role)) {
             return $this->roleNotFound();
         }
-        
+
         $form = $this->createForm(RoleType::class, $role);
-        
-        //TODO
-        /* generate the receive datas, normaly just with $request->request->all() but always empty */
-        $data = array();
-        if($request->get('name') != null)
-            $data['name'] = $request->get('name');
-            $form->submit($data, $clearMissing);
-            
-            if ($form->isValid()) {
-                $em = $this->get('doctrine.orm.entity_manager');
-                $em->persist($role);
-                $em->flush();
-                return $role;
-            } else {
-                return $form;
-            }
+
+        // The false parameter tells Symfony
+        // to keep the values in our entity
+        // if the user does not supply one in a query
+        $form->submit($request->request->all(), $clearMissing);
+
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($role);
+            $em->flush();
+            return $role;
+        } else {
+            return $form;
+        }
     }
-    
+
     /**
      * Delete Role with the specified id
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"role"})
@@ -149,13 +144,13 @@ class RoleController extends Controller {
         $role = $em->getRepository('AppBundle:Role')
         ->find($request->get('id'));
         /* @var $role Role */
-        
+
         if($role) {
             $em->remove($role);
             $em->flush();
         }
     }
-    
+
     /**
      * Message 404 Role not found
      * @return View
