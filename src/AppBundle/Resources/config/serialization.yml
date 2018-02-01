@@ -70,3 +70,11 @@ AppBundle\Entity\Role:
             groups: ['role', 'user']
         name:
             groups: ['role', 'user']
+AppBundle\Entity\Settings:
+    attributes:
+        id:
+            groups: ['settings']
+        title:
+            groups: ['settings']
+        limitGallery:
+            groups: ['settings']

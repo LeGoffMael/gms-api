@@ -101,3 +101,13 @@ AppBundle\Entity\Theme:
         linkHoverColor:
             - NotBlank: ~
             - Type: string
+AppBundle\Entity\Settings:
+    properties:
+        title:
+            - NotBlank: ~
+            - Type: string
+        limitGallery:
+            - NotBlank: ~
+            - Type: integer
+        theme:
+            - Type: AppBundle\Entity\Theme

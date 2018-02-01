@@ -34,6 +34,7 @@
     <Compile Include="app\autoload.php" />
     <Compile Include="bin\console" />
     <Compile Include="bin\symfony_requirements" />
+    <Compile Include="src\AppBundle\Controller\SettingsController.php" />
     <Compile Include="src\AppBundle\Controller\ThemeController.php" />
     <Compile Include="src\AppBundle\Controller\RoleController.php" />
     <Compile Include="src\AppBundle\Controller\TagController.php" />
@@ -41,6 +42,7 @@
     <Compile Include="src\AppBundle\Controller\DefaultController.php" />
     <Compile Include="src\AppBundle\Controller\ImageController.php" />
     <Compile Include="src\AppBundle\Controller\UserController.php" />
+    <Compile Include="src\AppBundle\Entity\Settings.php" />
     <Compile Include="src\AppBundle\Entity\Theme.php" />
     <Compile Include="src\AppBundle\Entity\Role.php" />
     <Compile Include="src\AppBundle\Entity\User.php" />
@@ -49,6 +51,7 @@
     <Compile Include="src\AppBundle\Entity\Image.php" />
     <Compile Include="src\AppBundle\AppBundle.php" />
     <Compile Include="src\.htaccess" />
+    <Compile Include="src\AppBundle\Form\Type\SettingsType.php" />
     <Compile Include="src\AppBundle\Form\Type\RoleType.php" />
     <Compile Include="src\AppBundle\Form\Type\ThemeType.php" />
     <Compile Include="src\AppBundle\Form\Type\TagType.php" />

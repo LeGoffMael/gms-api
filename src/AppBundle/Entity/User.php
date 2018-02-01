@@ -69,7 +69,6 @@ class User {
     public function getId() {
         return $this->id;
     }
-
     public function setId($id) {
         $this->id = $id;
         return $this;
@@ -78,7 +77,6 @@ class User {
     public function getName() {
         return $this->name;
     }
-
     public function setName($name) {
         $this->name = $name;
         return $this;
@@ -87,7 +85,6 @@ class User {
     public function getEmail() {
         return $this->email;
     }
-
     public function setEmail($email) {
         $this->email = $email;
     }
@@ -95,7 +92,6 @@ class User {
     public function getPassword() {
         return $this->password;
     }
-
     public function setPassword($pass) {
         $this->password = $pass;
     }
@@ -103,7 +99,6 @@ class User {
     public function getHashValidation() {
         return $this->hashValidation;
     }
-
     public function setHashValidation($hash) {
         $this->hashValidation = $hash;
     }
@@ -111,7 +106,6 @@ class User {
     public function getDateCreation() {
         return $this->dateCreation;
     }
-
     public function setDateCreation($dateCreation) {
         $this->dateCreation = $dateCreation;
     }
@@ -119,7 +113,6 @@ class User {
     public function getForgetPass() {
         return $this->forgetPass;
     }
-
     public function setForgetPass($forgetPass) {
         $this->forgetPass = $forgetPass;
     }
@@ -127,7 +120,6 @@ class User {
     public function getDateLastModification() {
         return $this->dateLastModification;
     }
-
     public function setDateLastModification($dateLastModification) {
         $this->dateLastModification = $dateLastModification;
     }
@@ -135,7 +127,6 @@ class User {
     public function getRole() {
         return $this->role;
     }
-    
     public function setRole($role) {
         $this->role = $role;
         return $this;

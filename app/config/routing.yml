@@ -25,3 +25,7 @@ users:
 themes:
     type:     rest
     resource: AppBundle\Controller\ThemeController
+
+settings:
+    type:     rest
+    resource: AppBundle\Controller\SettingsController

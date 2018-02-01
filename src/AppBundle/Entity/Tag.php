@@ -5,29 +5,32 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Tag short summary.
+ * Settings short summary.
  *
- * Tag description.
+ * Settings description.
  *
  * @version 1.0
  * @author Maël Le Goff
  * @ORM\Entity()
- * @ORM\Table(name="tags",
+ * @ORM\Table(name="settings",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="tags_name_unique",columns={"nameTag"})}
  * )
  */
-class Tag {
+class Settings {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", name="idTag")
-     * @ORM\GeneratedValue
+     * @ORM\Column(type="string", columnDefinition="ENUM('1')")
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", name="nameTag")
+     * @ORM\Column(type="string", name="title")
      */
-    protected $name;
+    protected $title;
+
+    /**
+     * @ORM\Column(type="integer", name="limitGallery")
+     */
+    protected $limitGallery;
 
     /**
      * @ORM\ManyToMany(targetEntity="Image", inversedBy="tags", cascade={"persist"})
