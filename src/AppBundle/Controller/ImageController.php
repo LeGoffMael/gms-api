@@ -132,24 +132,22 @@ class ImageController extends Controller {
         $data['score'] = 0;
         $today = new \DateTime();
         $data['date'] = $today->format('Y-m-d H:i:s');
-        //TODO Add categories
+        // Add Categories
         if(array_key_exists('categories', $data)) {
-            $idCategories = explode(',',$data['categories']);
-            foreach($idCategories as $idCategory) {
+            foreach($data['categories'] as $idCategory) {
                 $category = $this->get('doctrine.orm.entity_manager')
                                  ->getRepository('AppBundle:Category')
                                  ->find($idCategory);
                 if (empty($category)) {
                     return \FOS\RestBundle\View\View::create(['message' => 'Category '.$idCategory.' not found'], Response::HTTP_NOT_FOUND);
                 }
-                $image->addCategory($category);
+                $image->addCategory($category); //Remove to validation
             }
             unset($data['categories']);
         }
-        //TODO Add tags
+        // Add Tags
         if(array_key_exists('tags', $data)) {
-            $idTags = explode(',',$data['tags']);
-            foreach($idTags as $idTag) {
+            foreach($data['tags'] as $idTag) {
                 $tag = $this->get('doctrine.orm.entity_manager')
                                  ->getRepository('AppBundle:Tag')
                                  ->find($idTag);
@@ -158,7 +156,7 @@ class ImageController extends Controller {
                 }
                 $image->addTag($tag);
             }
-            unset($data['tags']);
+            unset($data['tags']); //Remove to validation
         }
         $form->submit($data); // Data validation
 
@@ -211,11 +209,52 @@ class ImageController extends Controller {
         }
 
         $form = $this->createForm(ImageType::class, $image);
+        
+        $data = $request->request->all();
+        //Value by default
+        unset($data['score']);
+        unset($data['date']);
+        // Update Categories
+        if(array_key_exists('categories', $data)) {
+            // Remove all Categories
+            foreach ($image->getCategories() as $category) {
+                $image->removeCategory($category);
+            }
+            // Add all Categories
+            foreach($data['categories'] as $idCategory) {
+                $category = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Category')
+                ->find($idCategory);
+                if (empty($category)) {
+                    return \FOS\RestBundle\View\View::create(['message' => 'Category '.$idCategory.' not found'], Response::HTTP_NOT_FOUND);
+                }
+                $image->addCategory($category); //Remove to validation
+            }
+            unset($data['categories']);
+        }
+        // Update Tags
+        if(array_key_exists('tags', $data)) {
+            // Remove all Tags
+            foreach ($image->getTags() as $tag) {
+                $image->removeTag($tag);
+            }
+            // Add all Tags
+            foreach($data['tags'] as $idTag) {
+                $tag = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Tag')
+                ->find($idTag);
+                if (empty($tag)) {
+                    return \FOS\RestBundle\View\View::create(['message' => 'Tag '.$idTag.' not found'], Response::HTTP_NOT_FOUND);
+                }
+                $image->addTag($tag);
+            }
+            unset($data['tags']); //Remove to validation
+        }
 
         // The false parameter tells Symfony
         // to keep the values in our entity
         // if the user does not supply one in a query
-        $form->submit($request->request->all(), $clearMissing);
+        $form->submit($data, $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -244,7 +283,7 @@ class ImageController extends Controller {
             foreach ($image->getCategories() as $category) {
                 $image->removeCategory($category);
             }
-            foreach ($image->getCategories() as $tag) {
+            foreach ($image->getTags() as $tag) {
                 $image->removeTag($tag);
             }
             $em->remove($image);

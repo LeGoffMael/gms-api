@@ -120,7 +120,7 @@ class Image {
      * @return Category
      */
     public function addCategory(Category $category) {
-        $this->categories[] = $category;
+        $this->categories->add($category);
         return $this;
     }
     /**

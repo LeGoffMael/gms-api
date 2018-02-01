@@ -137,9 +137,8 @@ class Category {
      *
      * @return Image
      */
-    public function addImage(Image $image)
-    {
-        $this->images[] = $image;
+    public function addImage(Image $image) {
+        $this->images->add($image);
         return $this;
     }
     /**
@@ -147,8 +146,7 @@ class Category {
      *
      * @param Image $image
      */
-    public function removeImage(Image $image)
-    {
+    public function removeImage(Image $image) {
         $this->images->removeElement($image);
     }
     /**
@@ -159,8 +157,8 @@ class Category {
     public function getImages() {
         return $this->images;
     }
-    
+    /*
     public function getNbImages() {
         return count($this->images);
-    }
+    }*/
 }

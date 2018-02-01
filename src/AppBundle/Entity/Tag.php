@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Tag description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author MaÃ«l Le Goff
  * @ORM\Entity()
  * @ORM\Table(name="tags",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="tags_name_unique",columns={"nameTag"})}

@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 /**
  * ImageType short summary.
@@ -12,10 +13,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
  * ImageType description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author Maï¿½l Le Goff
  */
 class ImageType extends AbstractType {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options) {      
         $builder->add('url');
         $builder->add('date', DateTimeType::class, array('widget' => 'single_text'));
         $builder->add('score');
