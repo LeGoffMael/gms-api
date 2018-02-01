@@ -70,3 +70,34 @@ AppBundle\Entity\Role:
         name:
             - NotBlank: ~
             - Type: string
+AppBundle\Entity\Theme:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - NotBlank: ~
+            - Type: string
+        mainColor:
+            - NotBlank: ~
+            - Type: string
+        mainDarkFontColor:
+            - NotBlank: ~
+            - Type: string
+        bodyColor:
+            - NotBlank: ~
+            - Type: string
+        bodyFontColor:
+            - NotBlank: ~
+            - Type: string
+        sideBarColor:
+            - NotBlank: ~
+            - Type: string
+        sideBarFontColor:
+            - NotBlank: ~
+            - Type: string
+        linkColor:
+            - NotBlank: ~
+            - Type: string
+        linkHoverColor:
+            - NotBlank: ~
+            - Type: string

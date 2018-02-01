@@ -34,12 +34,14 @@
     <Compile Include="app\autoload.php" />
     <Compile Include="bin\console" />
     <Compile Include="bin\symfony_requirements" />
+    <Compile Include="src\AppBundle\Controller\ThemeController.php" />
     <Compile Include="src\AppBundle\Controller\RoleController.php" />
     <Compile Include="src\AppBundle\Controller\TagController.php" />
     <Compile Include="src\AppBundle\Controller\CategoryController.php" />
     <Compile Include="src\AppBundle\Controller\DefaultController.php" />
     <Compile Include="src\AppBundle\Controller\ImageController.php" />
     <Compile Include="src\AppBundle\Controller\UserController.php" />
+    <Compile Include="src\AppBundle\Entity\Theme.php" />
     <Compile Include="src\AppBundle\Entity\Role.php" />
     <Compile Include="src\AppBundle\Entity\User.php" />
     <Compile Include="src\AppBundle\Entity\Tag.php" />
@@ -48,6 +50,7 @@
     <Compile Include="src\AppBundle\AppBundle.php" />
     <Compile Include="src\.htaccess" />
     <Compile Include="src\AppBundle\Form\Type\RoleType.php" />
+    <Compile Include="src\AppBundle\Form\Type\ThemeType.php" />
     <Compile Include="src\AppBundle\Form\Type\TagType.php" />
     <Compile Include="src\AppBundle\Form\Type\ImageType.php" />
     <Compile Include="src\AppBundle\Form\Type\CategoryType.php" />

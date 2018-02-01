@@ -21,3 +21,7 @@ roles:
 users:
     type:     rest
     resource: AppBundle\Controller\UserController
+
+themes:
+    type:     rest
+    resource: AppBundle\Controller\ThemeController
