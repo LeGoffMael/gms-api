@@ -65,11 +65,23 @@ class UserController extends Controller {
      */
     public function postUserAction(Request $request) {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['validation_groups'=>['Default', 'New']]);
 
-        $form->submit($request->request->all()); // Data validation
+        $data = $request->request->all();
+        //Value by default
+        $today = new \DateTime();
+        $data['createdAt'] = $today->format('Y-m-d H:i:s');
+        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
+        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
+        $data['role'] = 3;
+        $form->submit($data); // Data validation
 
         if ($form->isValid()) {
+            $encoder = $this->get('security.password_encoder');
+            // the password in clear is encoded before the backup
+            $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($encoded);
+
             $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($user);
             $em->flush();
@@ -115,14 +127,32 @@ class UserController extends Controller {
             return $this->userNotFound();
         }
 
-        $form = $this->createForm(UserType::class, $user);
+        if ($clearMissing) { // If a full update, the password must be validated
+            $options = ['validation_groups'=>['Default', 'FullUpdate']];
+        } else {
+            $options = []; // Symfony's default validation group is Default
+        }
+
+        $form = $this->createForm(UserType::class, $user, $options);
 
         // The false parameter tells Symfony
         // to keep the values in our entity
         // if the user does not supply one in a query
-        $form->submit($request->request->all(), $clearMissing);
+        $data = $request->request->all();
+        //Value by default
+        $today = new \DateTime();
+        $data['createdAt'] = $user->getCreatedAt()->format('Y-m-d H:i:s');
+        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
+        $data['role'] = 3;
+        $form->submit($data, $clearMissing);
 
         if ($form->isValid()) {
+            // If the user wants to change his password
+            if (!empty($user->getPlainPassword())) {
+                $encoder = $this->get('security.password_encoder');
+                $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($encoded);
+            }
             $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($user);
             $em->flush();

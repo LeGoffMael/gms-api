@@ -33,3 +33,7 @@ settings:
 votes:
     type:     rest
     resource: AppBundle\Controller\VoteController
+
+auth-tokens:
+    type:     rest
+    resource: AppBundle\Controller\AuthTokenController

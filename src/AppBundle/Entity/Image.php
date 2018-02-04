@@ -70,7 +70,11 @@ class Image {
      */
     private $votes;
 
-    private $score;
+    /**
+     * Sum of the vote values
+     * SUM(votes.value)
+     */
+    protected $score;
 
     public function __construct() {
         $this->categories = new ArrayCollection();

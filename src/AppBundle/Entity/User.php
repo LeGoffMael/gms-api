@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *            uniqueConstraints={@ORM\UniqueConstraint(name="users_name_mail_unique",columns={"nameUser","emailUser","hashValidationUser","forgetPassUser"})}
  * )
  */
-class User {
+class User implements UserInterface {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", name="idUser")
@@ -39,15 +40,20 @@ class User {
     protected $password;
 
     /**
+     * Not save in the database.
+     * It contain's the user's password in clear when it is created or modified.
+     */
+    protected $plainPassword;
+
+    /**
      * @ORM\Column(type="string", name="hashValidationUser")
      */
     protected $hashValidation;
 
     /**
-     * @ORM\Column(type="datetime", name="dateCreationUser")
-     * @ORM\Version
+     * @ORM\Column(type="datetime", name="createdAtUser")
      */
-    protected $dateCreation;
+    protected $createdAt;
 
     /**
      * @ORM\Column(type="string", name="forgetPassUser")
@@ -55,9 +61,9 @@ class User {
     protected $forgetPass;
 
     /**
-     * @ORM\Column(type="datetime", name="dateLastModificationUser")
+     * @ORM\Column(type="datetime", name="updatedAtUser")
      */
-    protected $dateLastModification;
+    protected $updatedAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="Role", inversedBy="users")
@@ -89,13 +95,6 @@ class User {
         $this->email = $email;
     }
 
-    public function getPassword() {
-        return $this->password;
-    }
-    public function setPassword($pass) {
-        $this->password = $pass;
-    }
-
     public function getHashValidation() {
         return $this->hashValidation;
     }
@@ -103,11 +102,11 @@ class User {
         $this->hashValidation = $hash;
     }
 
-    public function getDateCreation() {
-        return $this->dateCreation;
+    public function getCreatedAt() {
+        return $this->updatedAt;
     }
-    public function setDateCreation($dateCreation) {
-        $this->dateCreation = $dateCreation;
+    public function setCreatedAt($createdAt) {
+        $this->createdAt = $createdAt;
     }
 
     public function getForgetPass() {
@@ -117,18 +116,53 @@ class User {
         $this->forgetPass = $forgetPass;
     }
 
-    public function getDateLastModification() {
-        return $this->dateLastModification;
+    public function getUpdatedAt() {
+        return $this->updatedAt;
     }
-    public function setDateLastModification($dateLastModification) {
-        $this->dateLastModification = $dateLastModification;
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
     }
-    
+
     public function getRole() {
         return $this->role;
     }
     public function setRole($role) {
         $this->role = $role;
         return $this;
+    }
+
+    /******** UserInterface ********/
+
+    public function getPassword() {
+        return $this->password;
+    }
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    public function getPlainPassword() {
+        return $this->plainPassword;
+    }
+    public function setPlainPassword($plainPassword) {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getUsername() {
+        return $this->name;
+    }
+
+    public function getRoles() {
+        return $this->role;
+    }
+
+    public function getSalt() {
+        return null;
+    }
+
+    /**
+     * Deleting sensitive data
+     */
+    public function eraseCredentials() {
+        $this->plainPassword = null;
     }
 }

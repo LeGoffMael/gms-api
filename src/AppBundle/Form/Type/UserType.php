@@ -19,11 +19,9 @@ class UserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('name');
         $builder->add('email', EmailType::class);
-        $builder->add('password');
-        $builder->add('hashValidation');
-        $builder->add('dateCreation', DateTimeType::class, array('widget' => 'single_text'));
-        $builder->add('forgetPass');
-        $builder->add('dateLastModification', DateTimeType::class, array('widget' => 'single_text'));
+        $builder->add('plainPassword');
+        $builder->add('createdAt', DateTimeType::class, array('widget' => 'single_text'));
+        $builder->add('updatedAt', DateTimeType::class, array('widget' => 'single_text'));
         $builder->add('role');
     }
 

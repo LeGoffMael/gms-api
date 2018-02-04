@@ -14,6 +14,7 @@ AppBundle\Entity\Category:
             groups: ['category', 'parent', 'children']
         nbImages: 
             groups: ['category', 'parent', 'children']
+
 AppBundle\Entity\Category:
     attributes:
         id:
@@ -30,6 +31,7 @@ AppBundle\Entity\Category:
             groups: ['category', 'parent', 'children']
         nbImages: 
             groups: ['category', 'parent', 'children']
+
 AppBundle\Entity\Tag:
     attributes:
         id:
@@ -40,6 +42,7 @@ AppBundle\Entity\Tag:
             groups: ['tag']
         nbImages: 
             groups: ['tag']
+
 AppBundle\Entity\Image:
     attributes:
         id:
@@ -58,32 +61,29 @@ AppBundle\Entity\Image:
             groups: ['image']
         score:
             groups: ['image', 'vote']
+
 AppBundle\Entity\User:
     attributes:
         id:
-            groups: ['user', 'vote', 'image', 'category', 'tag']
+            groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
         name:
-            groups: ['user', 'vote', 'image', 'category', 'tag']
+            groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
         email:
-            groups: ['user', 'vote', 'image', 'category', 'tag']
-        password:
-            groups: ['user']
-        hashValidation:
-            groups: ['user']
-        forgetPass:
-            groups: ['user']
-        dateCreation:
-            groups: ['user']
-        dateLastModification:
-            groups: ['user']
+            groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
+        createdAt:
+            groups: ['user', 'auth-token']
+        updatedAt:
+            groups: ['user', 'auth-token']
         role:
             groups: ['user']
+
 AppBundle\Entity\Role:
     attributes:
         id:
             groups: ['role', 'user']
         name:
             groups: ['role', 'user']
+
 AppBundle\Entity\Settings:
     attributes:
         title:
@@ -92,6 +92,7 @@ AppBundle\Entity\Settings:
             groups: ['settings']
         theme:
             groups: ['settings']
+
 AppBundle\Entity\Theme:
     attributes:
         id:
@@ -114,6 +115,7 @@ AppBundle\Entity\Theme:
             groups: ['settings']
         linkHoverColor:
             groups: ['settings']
+
 AppBundle\Entity\Vote:
     attributes:
         ip:
@@ -126,3 +128,14 @@ AppBundle\Entity\Vote:
             groups: ['vote']
         date:
             groups: ['vote']
+
+AppBundle\Entity\AuthToken:
+    attributes:
+        id:
+            groups: ['auth-token']
+        value:
+            groups: ['auth-token']
+        createdAt:
+            groups: ['auth-token']
+        user:
+            groups: ['auth-token']

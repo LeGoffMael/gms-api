@@ -66,7 +66,11 @@ class Category {
      */
     protected $user;
 
-    private $nbImages;
+    /**
+     * Number of images in the category
+     * Count(images)
+     */
+    protected $nbImages;
 
     public function __construct() {
         $this->childrens = new ArrayCollection();

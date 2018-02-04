@@ -13,6 +13,7 @@ AppBundle\Entity\Image:
             - Type: string
         user:
             - Type: AppBundle\Entity\User
+
 AppBundle\Entity\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -27,6 +28,7 @@ AppBundle\Entity\Category:
             - Type: AppBundle\Entity\Category
         user:
             - Type: AppBundle\Entity\User
+
 AppBundle\Entity\Tag:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -36,12 +38,11 @@ AppBundle\Entity\Tag:
             - Type: string
         user:
             - Type: AppBundle\Entity\User
+
 AppBundle\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: hashValidation
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: forgetPass
     properties:
         name:
             - NotBlank: ~
@@ -49,23 +50,21 @@ AppBundle\Entity\User:
         email:
             - NotBlank: ~
             - Email: ~
-        password:
-            - NotBlank: ~
+        plainPassword:
+            - NotBlank: { groups: [New, FullUpdate] }
             - Type: string
-        hashValidation:
-            - NotBlank: ~
-            - Type: string
-        forgetPass:
-            - NotBlank: ~
-            - Type: string
-        dateCreation:
+            - Length:
+                min: 4
+                max: 50
+        createdAt:
             - Type: datetime
             - NotBlank: ~
-        dateLastModification:
+        updatedAt:
             - Type: datetime
             - NotBlank: ~
         role:
             - Type: AppBundle\Entity\Role
+
 AppBundle\Entity\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -73,6 +72,7 @@ AppBundle\Entity\Role:
         name:
             - NotBlank: ~
             - Type: string
+
 AppBundle\Entity\Theme:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -104,6 +104,7 @@ AppBundle\Entity\Theme:
         linkHoverColor:
             - NotBlank: ~
             - Type: string
+
 AppBundle\Entity\Settings:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
@@ -121,6 +122,7 @@ AppBundle\Entity\Settings:
             - Type: integer
         theme:
             - Type: AppBundle\Entity\Theme
+
 AppBundle\Entity\Vote:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
@@ -141,3 +143,12 @@ AppBundle\Entity\Vote:
         date:
             - Type: datetime
             - NotBlank: ~
+
+AppBundle\Entity\Credentials:
+    properties:
+        login:
+            - NotBlank: ~
+            - Type: string
+        password:
+            - NotBlank: ~
+            - Type: string

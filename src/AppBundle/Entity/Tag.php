@@ -45,7 +45,11 @@ class Tag {
      */
     protected $user;
 
-    private $nbImages;
+    /**
+     * Number of images in the tag
+     * Count(images)
+     */
+    protected $nbImages;
 
     public function __construct() {
         $this->images = new ArrayCollection();
