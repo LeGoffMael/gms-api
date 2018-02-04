@@ -28,7 +28,7 @@ class SettingsController extends Controller {
      */
     public function getSettingsAction(Request $request) {
         $settings = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Role')
+                ->getRepository('AppBundle:Settings')
                 ->find(1);
         /* @var $settings Settings */
 
@@ -46,11 +46,15 @@ class SettingsController extends Controller {
      * @param Request $request
      * @return \AppBundle\Entity\Settings|\AppBundle\Form\Type\SettingsType
      */
-    public function postRoleAction(Request $request) {
+    public function postSettingsAction(Request $request) {
         $settings = new Settings();
+        $settings->setId(1);
         $form = $this->createForm(SettingsType::class, $settings);
 
-        $form->submit($request->request->all()); // Data validation
+        $data = $request->request->all();
+        //Value by default
+        $data['id'] = 1;
+        $form->submit($data); // Data validation
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -103,7 +107,10 @@ class SettingsController extends Controller {
         // The false parameter tells Symfony
         // to keep the values in our entity
         // if the user does not supply one in a query
-        $form->submit($request->request->all(), $clearMissing);
+        $data = $request->request->all();
+        //Value by default
+        $data['id'] = 1;
+        $form->submit($data, $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
@@ -115,24 +122,25 @@ class SettingsController extends Controller {
         }
     }
 
-    /**
-     * Delete Settings
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"settings"})
-     * @Rest\Delete("/settings")
-     * @param Request $request
-     */
-    public function removeRoleAction(Request $request)
+    /*
+    public function removeSettingsAction(Request $request)
     {
+        // Delete Settings
+        // @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"settings"})
+        // @Rest\Delete("/settings")
+        // @param Request $request
+
         $em = $this->get('doctrine.orm.entity_manager');
         $settings = $em->getRepository('AppBundle:Settings')
         ->find(1);
-        /* @var $settings Settings */
+        // @var $settings Settings
 
         if($settings) {
             $em->remove($settings);
             $em->flush();
         }
     }
+    */
 
     /**
      * Message 404 Settings not found

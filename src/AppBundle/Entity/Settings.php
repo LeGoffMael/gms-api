@@ -41,7 +41,7 @@ class Settings {
         return $this->id;
     }
     public function setId($id) {
-        $this->id = '1';
+        $this->id = $id;
         return $this;
     }
 

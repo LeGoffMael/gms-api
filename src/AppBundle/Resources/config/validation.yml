@@ -102,7 +102,14 @@ AppBundle\Entity\Theme:
             - NotBlank: ~
             - Type: string
 AppBundle\Entity\Settings:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [id]
+            message: 'Settings must be unique. You can update them.'
     properties:
+        id:
+            - EqualTo: 1
+            - Type: string
         title:
             - NotBlank: ~
             - Type: string

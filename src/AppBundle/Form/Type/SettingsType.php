@@ -15,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SettingsType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder->add('id');
         $builder->add('title');
         $builder->add('limitGallery');
         $builder->add('theme');

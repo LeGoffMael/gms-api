@@ -72,9 +72,31 @@ AppBundle\Entity\Role:
             groups: ['role', 'user']
 AppBundle\Entity\Settings:
     attributes:
-        id:
-            groups: ['settings']
         title:
             groups: ['settings']
         limitGallery:
+            groups: ['settings']
+        theme:
+            groups: ['settings']
+AppBundle\Entity\Theme:
+    attributes:
+        id:
+            groups: ['settings']
+        name:
+            groups: ['settings']
+        mainColor:
+            groups: ['settings']
+        mainDarkFontColor:
+            groups: ['settings']
+        bodyColor:
+            groups: ['settings']
+        bodyFontColor:
+            groups: ['settings']
+        sideBarColor:
+            groups: ['settings']
+        sideBarFontColor:
+            groups: ['settings']
+        linkColor:
+            groups: ['settings']
+        linkHoverColor:
             groups: ['settings']
