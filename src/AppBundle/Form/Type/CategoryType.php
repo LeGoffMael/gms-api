@@ -18,6 +18,7 @@ class CategoryType extends AbstractType {
         $builder->add('name');
         $builder->add('urlImage');
         $builder->add('parent');
+        $builder->add('user');
     }
 
     public function configureOptions(OptionsResolver $resolver) {

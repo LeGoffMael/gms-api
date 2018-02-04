@@ -57,7 +57,7 @@ class CategoryController extends Controller {
     }
 
     /**
-     * All Images of the Category
+     * Parent of the Category
      * @Rest\View(serializerGroups={"category"})
      * @Rest\Get("/categories/{id}/parent")
      * @param Request $request
@@ -66,7 +66,7 @@ class CategoryController extends Controller {
     public function getParentAction(Request $request) {
         $category = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Category')
-                ->find($request->get('id')); // L'identifiant en tant que param�tre n'est plus n�cessaire
+                ->find($request->get('id'));
         /* @var $category Category */
 
         if (empty($category)) {
@@ -110,7 +110,7 @@ class CategoryController extends Controller {
         /* @var $image Image */
 
         if (empty($image)) {
-            return $this->imageNotFound();
+            return \FOS\RestBundle\View\View::create(['message' => 'Image not found'], Response::HTTP_NOT_FOUND);
         }
 
         $categories = $this->get('doctrine.orm.entity_manager')
@@ -119,6 +119,34 @@ class CategoryController extends Controller {
                 ->join('c.images', 'i')
                 ->where('i.id = :id_img')
                 ->setParameter('id_img', $request->get('id'))
+                ->getQuery()->getResult();
+        /* @var $categories Category[] */
+
+        return $categories;
+    }
+
+    /**
+     * All Categories of the User
+     * @Rest\View(serializerGroups={"category"})
+     * @Rest\Get("/users/{id}/categories")
+     * @param Request $request
+     * @return mixed
+     */
+    public function getUserCategoriesAction(Request $request) {
+        $user = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->find($request->get('id'));
+        /* @var $user User */
+
+        if (empty($user)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $categories = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Category')
+                ->createQueryBuilder('c')
+                ->where('c.user = :id_user')
+                ->setParameter('id_user', $request->get('id'))
                 ->getQuery()->getResult();
         /* @var $categories Category[] */
 

@@ -29,3 +29,7 @@ themes:
 settings:
     type:     rest
     resource: AppBundle\Controller\SettingsController
+
+votes:
+    type:     rest
+    resource: AppBundle\Controller\VoteController

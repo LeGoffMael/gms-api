@@ -1,57 +1,71 @@
 AppBundle\Entity\Category:
     attributes:
         id:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         name:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         urlImage:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         childrens:
             groups: ['children']
         parent:
             groups: ['parent']
+        user:
+            groups: ['category', 'parent', 'children']
+        nbImages: 
+            groups: ['category', 'parent', 'children']
 AppBundle\Entity\Category:
     attributes:
         id:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         name:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         urlImage:
-            groups: ['category', 'parent', 'children', 'image']
+            groups: ['category', 'parent', 'children', 'image', 'vote']
         childrens:
             groups: ['children']
         parent:
             groups: ['parent']
+        user:
+            groups: ['category', 'parent', 'children']
+        nbImages: 
+            groups: ['category', 'parent', 'children']
 AppBundle\Entity\Tag:
     attributes:
         id:
-            groups: ['tag', 'image']
+            groups: ['tag', 'image', 'vote']
         name:
-            groups: ['tag', 'image']
+            groups: ['tag', 'image', 'vote']
+        user:
+            groups: ['tag']
+        nbImages: 
+            groups: ['tag']
 AppBundle\Entity\Image:
     attributes:
         id:
-            groups: ['image']
+            groups: ['image', 'vote']
         url:
-            groups: ['image']
+            groups: ['image', 'vote']
         date:
+            groups: ['image', 'vote']
+        description:
+            groups: ['image', 'vote']
+        categories:
+            groups: ['image', 'vote']
+        tags:
+            groups: ['image', 'vote']
+        user:
             groups: ['image']
         score:
-            groups: ['image']
-        description:
-            groups: ['image']
-        categories:
-            groups: ['image']
-        tags:
-            groups: ['image']
+            groups: ['image', 'vote']
 AppBundle\Entity\User:
     attributes:
         id:
-            groups: ['user']
+            groups: ['user', 'vote', 'image', 'category', 'tag']
         name:
-            groups: ['user']
+            groups: ['user', 'vote', 'image', 'category', 'tag']
         email:
-            groups: ['user']
+            groups: ['user', 'vote', 'image', 'category', 'tag']
         password:
             groups: ['user']
         hashValidation:
@@ -100,3 +114,15 @@ AppBundle\Entity\Theme:
             groups: ['settings']
         linkHoverColor:
             groups: ['settings']
+AppBundle\Entity\Vote:
+    attributes:
+        ip:
+            groups: ['vote']
+        user:
+            groups: ['vote']
+        image:
+            groups: ['vote']
+        value:
+            groups: ['vote']
+        date:
+            groups: ['vote']

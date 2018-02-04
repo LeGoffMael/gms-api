@@ -35,11 +35,6 @@ class Image {
     protected $date;
 
     /**
-     * @ORM\Column(type="integer", name="scoreImage")
-     */
-    protected $score;
-
-    /**
      * @ORM\Column(type="string", name="descriptionImage")
      */
     protected $description;
@@ -62,51 +57,54 @@ class Image {
      */
     protected $tags;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
+     * @var User
+     */
+    protected $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Vote", mappedBy="image")
+     * @var Vote[]
+     */
+    private $votes;
+
+    private $score;
+
     public function __construct() {
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function getId() {
         return $this->id;
     }
-
-    public function getUrl() {
-        return $this->url;
-    }
-
-    public function getDate() {
-        return $this->date;
-    }
-
-    public function getScore() {
-        return $this->score;
-    }
-
-    public function getDescription() {
-        return $this->description;
-    }
-
     public function setId($id) {
         $this->id = $id;
         return $this;
     }
 
+    public function getUrl() {
+        return $this->url;
+    }
     public function setUrl($url) {
         $this->url = $url;
         return $this;
     }
 
-    public function setScore($score) {
-        $this->score = $score;
-        return $this;
+    public function getDate() {
+        return $this->date;
     }
-
     public function setDate($date) {
         $this->date = $date;
         return $this;
     }
 
+    public function getDescription() {
+        return $this->description;
+    }
     public function setDescription($description) {
         $this->description = $description;
         return $this;
@@ -166,5 +164,49 @@ class Image {
      */
     public function getTags() {
         return $this->tags;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+    public function setUser($user) {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Add vote
+     *
+     * @param Vote $vote
+     *
+     * @return Vote
+     */
+    public function addVote(Vote $vote) {
+        $this->votes->add($vote);
+        return $this;
+    }
+    /**
+     * Remove vote
+     *
+     * @param Image $image
+     */
+    public function removeVote(Vote $vote) {
+        $this->votes->removeElement($vote);
+    }
+    /**
+     * Get votes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVotes() {
+        return $this->votes;
+    }
+
+    public function getScore() {
+        $score = 0;
+        foreach ($this->votes as $vote) {
+            $score += $vote->getValue();
+        }
+        return $score;
     }
 }

@@ -5,32 +5,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Settings short summary.
+ * Tag short summary.
  *
- * Settings description.
+ * Tag description.
  *
  * @version 1.0
  * @author Maël Le Goff
  * @ORM\Entity()
- * @ORM\Table(name="settings",
+ * @ORM\Table(name="tags",
  *            uniqueConstraints={@ORM\UniqueConstraint(name="tags_name_unique",columns={"nameTag"})}
  * )
  */
-class Settings {
+class Tag {
     /**
-     * @ORM\Column(type="string", columnDefinition="ENUM('1')")
+     * @ORM\Id
+     * @ORM\Column(type="integer", name="idTag")
+     * @ORM\GeneratedValue
      */
     protected $id;
 
     /**
-     * @ORM\Column(type="string", name="title")
+     * @ORM\Column(type="string", name="nameTag")
      */
-    protected $title;
-
-    /**
-     * @ORM\Column(type="integer", name="limitGallery")
-     */
-    protected $limitGallery;
+    protected $name;
 
     /**
      * @ORM\ManyToMany(targetEntity="Image", inversedBy="tags", cascade={"persist"})
@@ -40,6 +37,15 @@ class Settings {
      * )
      */
     protected $images;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
+     * @var User
+     */
+    protected $user;
+
+    private $nbImages;
 
     public function __construct() {
         $this->images = new ArrayCollection();
@@ -89,5 +95,17 @@ class Settings {
      */
     public function getImages() {
         return $this->images;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+    public function setUser($user) {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function getNbImages() {
+        return count($this->images);
     }
 }

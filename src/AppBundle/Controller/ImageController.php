@@ -116,6 +116,34 @@ class ImageController extends Controller {
         return $images;
     }
 
+    /**
+     * All Images of the User
+     * @Rest\View(serializerGroups={"image"})
+     * @Rest\Get("/users/{id}/images")
+     * @param Request $request
+     * @return mixed
+     */
+    public function getUserImagesAction(Request $request) {
+        $user = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->find($request->get('id'));
+        /* @var $user User */
+
+        if (empty($user)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $images = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Image')
+                ->createQueryBuilder('i')
+                ->where('i.user = :id_user')
+                ->setParameter('id_user', $request->get('id'))
+                ->getQuery()->getResult();
+        /* @var $images Image[] */
+
+        return $images;
+    }
+
     /*********************** POST ***********************/
     /**
      * Insert new Image
@@ -129,7 +157,6 @@ class ImageController extends Controller {
 
         $data = $request->request->all();
         //Value by default
-        $data['score'] = 0;
         $today = new \DateTime();
         $data['date'] = $today->format('Y-m-d H:i:s');
         // Add Categories
@@ -209,10 +236,9 @@ class ImageController extends Controller {
         }
 
         $form = $this->createForm(ImageType::class, $image);
-        
+
         $data = $request->request->all();
         //Value by default
-        unset($data['score']);
         unset($data['date']);
         // Update Categories
         if(array_key_exists('categories', $data)) {

@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class TagType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('name');
+        $builder->add('user');
     }
 
     public function configureOptions(OptionsResolver $resolver) {

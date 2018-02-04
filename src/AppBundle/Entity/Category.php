@@ -59,6 +59,15 @@ class Category {
      */
     protected $images;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
+     * @var User
+     */
+    protected $user;
+
+    private $nbImages;
+
     public function __construct() {
         $this->childrens = new ArrayCollection();
         $this->images = new ArrayCollection();
@@ -67,34 +76,30 @@ class Category {
     public function getId() {
         return $this->id;
     }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function getUrlImage() {
-        return $this->urlImage;
-    }
-
-    public function getParent() {
-        return $this->parent;
-    }
-
     public function setId($id) {
         $this->id = $id;
         return $this;
     }
 
+    public function getName() {
+        return $this->name;
+    }
     public function setName($name) {
         $this->name = $name;
         return $this;
     }
 
+    public function getUrlImage() {
+        return $this->urlImage;
+    }
     public function setUrlImage($urlImage) {
         $this->urlImage = $urlImage;
         return $this;
     }
 
+    public function getParent() {
+        return $this->parent;
+    }
     public function setParent($parent) {
         $this->parent = $parent;
         return $this;
@@ -157,8 +162,16 @@ class Category {
     public function getImages() {
         return $this->images;
     }
-    /*
+
+    public function getUser() {
+        return $this->user;
+    }
+    public function setUser($user) {
+        $this->user = $user;
+        return $this;
+    }
+
     public function getNbImages() {
         return count($this->images);
-    }*/
+    }
 }

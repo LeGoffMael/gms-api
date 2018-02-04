@@ -9,11 +9,10 @@ AppBundle\Entity\Image:
         date:
             - Type: datetime
             - NotBlank: ~
-        score:
-            - Type: integer
-            - NotBlank: ~
         description:
             - Type: string
+        user:
+            - Type: AppBundle\Entity\User
 AppBundle\Entity\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -26,6 +25,8 @@ AppBundle\Entity\Category:
             - Type: string
         parent:
             - Type: AppBundle\Entity\Category
+        user:
+            - Type: AppBundle\Entity\User
 AppBundle\Entity\Tag:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -33,6 +34,8 @@ AppBundle\Entity\Tag:
         name:
             - NotBlank: ~
             - Type: string
+        user:
+            - Type: AppBundle\Entity\User
 AppBundle\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
@@ -118,3 +121,23 @@ AppBundle\Entity\Settings:
             - Type: integer
         theme:
             - Type: AppBundle\Entity\Theme
+AppBundle\Entity\Vote:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [ip, user, image]
+            message: 'login-user-image voting already exists'
+    properties:
+        ip:
+            - Type: string
+            - NotBlank: ~
+        user:
+            - Type: AppBundle\Entity\User
+        image:
+            - Type: AppBundle\Entity\Image
+        value:
+            - Choice:
+                choices:  [1, -1]
+                message:  Choose a valid value.
+        date:
+            - Type: datetime
+            - NotBlank: ~

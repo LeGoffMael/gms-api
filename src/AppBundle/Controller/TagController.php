@@ -86,6 +86,34 @@ class TagController extends Controller {
     }
 
     /**
+     * All Tags of the User
+     * @Rest\View(serializerGroups={"tag"})
+     * @Rest\Get("/users/{id}/tags")
+     * @param Request $request
+     * @return mixed
+     */
+    public function getUserTagsAction(Request $request) {
+        $user = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->find($request->get('id'));
+        /* @var $user User */
+
+        if (empty($user)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $tags = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Tag')
+                ->createQueryBuilder('t')
+                ->where('t.user = :id_user')
+                ->setParameter('id_user', $request->get('id'))
+                ->getQuery()->getResult();
+        /* @var $tags Tag[] */
+
+        return $tags;
+    }
+
+    /**
      * Insert new Tag
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"tag"})
      * @Rest\Post("/tags")
