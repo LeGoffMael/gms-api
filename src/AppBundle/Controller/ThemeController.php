@@ -156,6 +156,6 @@ class ThemeController extends Controller {
      * @return View
      */
     private function themeNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Theme not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Theme not found');
     }
 }

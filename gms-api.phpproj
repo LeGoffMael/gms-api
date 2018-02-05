@@ -65,6 +65,8 @@
     <Compile Include="src\AppBundle\Form\Type\ImageType.php" />
     <Compile Include="src\AppBundle\Form\Type\CategoryType.php" />
     <Compile Include="src\AppBundle\Form\Type\UserType.php" />
+    <Compile Include="src\AppBundle\Security\AuthTokenAuthenticator.php" />
+    <Compile Include="src\AppBundle\Security\AuthTokenUserProvider.php" />
     <Compile Include="tests\AppBundle\Controller\DefaultControllerTest.php" />
     <Compile Include="var\cache\dev\appDevDebugProjectContainer.php" />
     <Compile Include="var\cache\dev\appDevDebugProjectContainer.php.meta" />
@@ -111,6 +113,7 @@
     <Folder Include="src" />
     <Folder Include="src\AppBundle\Form\" />
     <Folder Include="src\AppBundle\Form\Type\" />
+    <Folder Include="src\AppBundle\Security\" />
     <Folder Include="src\AppBundle\Resources\" />
     <Folder Include="src\AppBundle\Resources\config\" />
     <Folder Include="tests\AppBundle\Controller" />

@@ -74,7 +74,7 @@ class VoteController extends Controller {
         /* @var $user User */
 
         if (empty($user)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
         $votes = $this->get('doctrine.orm.entity_manager')
@@ -102,7 +102,7 @@ class VoteController extends Controller {
         /* @var $image Image */
 
         if (empty($image)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Image not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
         }
 
         $votes = $this->get('doctrine.orm.entity_manager')
@@ -235,6 +235,6 @@ class VoteController extends Controller {
      * @return View
      */
     private function voteNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Vote not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Vote not found');
     }
 }

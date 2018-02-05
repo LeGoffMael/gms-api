@@ -10,14 +10,12 @@ use AppBundle\Form\Type\CredentialsType;
 use AppBundle\Entity\AuthToken;
 use AppBundle\Entity\Credentials;
 
-class AuthTokenController extends Controller
-{
+class AuthTokenController extends Controller {
     /**
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"auth-token"})
      * @Rest\Post("/auth-tokens")
      */
-    public function postAuthTokensAction(Request $request)
-    {
+    public function postAuthTokensAction(Request $request) {
         $credentials = new Credentials();
         $form = $this->createForm(CredentialsType::class, $credentials);
 
@@ -54,8 +52,27 @@ class AuthTokenController extends Controller
         return $authToken;
     }
 
-    private function invalidCredentials()
-    {
-        return \FOS\RestBundle\View\View::create(['message' => 'Invalid credentials'], Response::HTTP_BAD_REQUEST);
+    /**
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\Delete("/auth-tokens/{id}")
+     */
+    public function removeAuthTokenAction(Request $request) {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $authToken = $em->getRepository('AppBundle:AuthToken')
+                    ->find($request->get('id'));
+        /* @var $authToken AuthToken */
+
+        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        if ($authToken && $authToken->getUser()->getId() === $connectedUser->getId()) {
+            $em->remove($authToken);
+            $em->flush();
+        } else {
+            throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException();
+        }
+    }
+
+    private function invalidCredentials() {
+        throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException('Invalid credentials');
     }
 }

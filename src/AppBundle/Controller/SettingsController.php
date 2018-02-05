@@ -147,6 +147,6 @@ class SettingsController extends Controller {
      * @return View
      */
     private function settingsNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Settings not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Settings not found');
     }
 }

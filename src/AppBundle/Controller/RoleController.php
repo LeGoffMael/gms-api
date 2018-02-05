@@ -156,6 +156,6 @@ class RoleController extends Controller {
      * @return View
      */
     private function roleNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Role not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Role not found');
     }
 }

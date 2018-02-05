@@ -99,7 +99,7 @@ class TagController extends Controller {
         /* @var $user User */
 
         if (empty($user)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
         $tags = $this->get('doctrine.orm.entity_manager')
@@ -213,6 +213,6 @@ class TagController extends Controller {
      * @return View
      */
     private function tagNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Tag not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Tag not found');
     }
 }

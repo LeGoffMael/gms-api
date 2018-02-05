@@ -72,7 +72,7 @@ class ImageController extends Controller {
         /* @var $category Category */
 
         if (empty($category)) {
-            return $this->categoryNotFound();
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Category not found');
         }
 
         $images = $this->get('doctrine.orm.entity_manager')
@@ -101,7 +101,7 @@ class ImageController extends Controller {
         /* @var $tag Tag */
 
         if (empty($tag)) {
-            return $this->tagNotFound();
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Tag not found');
         }
 
         $images = $this->get('doctrine.orm.entity_manager')
@@ -130,7 +130,7 @@ class ImageController extends Controller {
         /* @var $user User */
 
         if (empty($user)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
         $images = $this->get('doctrine.orm.entity_manager')
@@ -166,7 +166,7 @@ class ImageController extends Controller {
                                  ->getRepository('AppBundle:Category')
                                  ->find($idCategory);
                 if (empty($category)) {
-                    return \FOS\RestBundle\View\View::create(['message' => 'Category '.$idCategory.' not found'], Response::HTTP_NOT_FOUND);
+                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Category '.$idCategory.' not found');
                 }
                 $image->addCategory($category); //Remove to validation
             }
@@ -179,7 +179,7 @@ class ImageController extends Controller {
                                  ->getRepository('AppBundle:Tag')
                                  ->find($idTag);
                 if (empty($tag)) {
-                    return \FOS\RestBundle\View\View::create(['message' => 'Tag '.$idTag.' not found'], Response::HTTP_NOT_FOUND);
+                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Tag '.$idTag.' not found');
                 }
                 $image->addTag($tag);
             }
@@ -252,7 +252,7 @@ class ImageController extends Controller {
                 ->getRepository('AppBundle:Category')
                 ->find($idCategory);
                 if (empty($category)) {
-                    return \FOS\RestBundle\View\View::create(['message' => 'Category '.$idCategory.' not found'], Response::HTTP_NOT_FOUND);
+                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Category '.$idCategory.' not found');
                 }
                 $image->addCategory($category); //Remove to validation
             }
@@ -270,7 +270,7 @@ class ImageController extends Controller {
                 ->getRepository('AppBundle:Tag')
                 ->find($idTag);
                 if (empty($tag)) {
-                    return \FOS\RestBundle\View\View::create(['message' => 'Tag '.$idTag.' not found'], Response::HTTP_NOT_FOUND);
+                    throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Tag '.$idTag.' not found');
                 }
                 $image->addTag($tag);
             }
@@ -322,6 +322,6 @@ class ImageController extends Controller {
      * @return View
      */
     private function imageNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Image not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
     }
 }

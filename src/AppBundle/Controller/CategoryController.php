@@ -110,7 +110,7 @@ class CategoryController extends Controller {
         /* @var $image Image */
 
         if (empty($image)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Image not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
         }
 
         $categories = $this->get('doctrine.orm.entity_manager')
@@ -139,7 +139,7 @@ class CategoryController extends Controller {
         /* @var $user User */
 
         if (empty($user)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
         $categories = $this->get('doctrine.orm.entity_manager')
@@ -259,6 +259,6 @@ class CategoryController extends Controller {
      * @return View
      */
     private function categoryNotFound() {
-        return \FOS\RestBundle\View\View::create(['message' => 'Category not found'], Response::HTTP_NOT_FOUND);
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Category not found');
     }
 }
