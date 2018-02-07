@@ -117,60 +117,13 @@ class VoteController extends Controller {
     }
 
     /**
-     * Insert new Vote
-     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"vote"})
-     * @Rest\Post("/votes")
+     * Insert or Full Update Vote with the specified ids
+     * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"vote"})
+     * @Rest\Put("/votes/{ip}_{user}_{image}")
      * @param Request $request
      * @return \AppBundle\Entity\Vote|\AppBundle\Form\Type\VoteType
      */
-    public function postVoteAction(Request $request) {
-        $vote = new Vote();
-        $form = $this->createForm(VoteType::class, $vote);
-
-        $data = $request->request->all();
-        //Default value
-        $data['ip'] = $request->getClientIp();
-        $today = new \DateTime();
-        $data['date'] = $today->format('Y-m-d H:i:s');
-        $form->submit($data); // Data validation
-
-        if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $em->persist($vote);
-            $em->flush();
-            return $vote;
-        } else {
-            return $form;
-        }
-    }
-
-    /**
-     * Full Update Vote with the specified ids
-     * @Rest\View(serializerGroups={"vote"})
-     * @Rest\Put("/votes/{ip}_{user}_{image}")
-     */
     public function putVoteAction(Request $request) {
-        return $this->updateVote($request, true);
-    }
-
-    /**
-     * Partial Update Vote with the specified ids
-     * @Rest\View(serializerGroups={"vote"})
-     * @Rest\Patch("/votes/{ip}_{user}_{image}")
-     * @param Request $request
-     * @return mixed
-     */
-    public function patchVoteAction(Request $request) {
-        return $this->updateVote($request, false);
-    }
-
-    /**
-     * Complete or Partial Update Vote with the specified id
-     * @param Request $request
-     * @param mixed $clearMissing complete or partial
-     * @return mixed
-     */
-    private function updateVote(Request $request, $clearMissing) {
         $vote = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Vote')
                 ->findBy(array(
@@ -180,30 +133,46 @@ class VoteController extends Controller {
                 ));
         /* @var $vote Vote */
 
+        $data = $request->request->all();
+        //Default value
+        $data['ip'] = $request->get('ip');
+        $data['user'] = $request->get('user');
+        $data['image'] = $request->get('image');
+        $today = new \DateTime();
+        $data['date'] = $today->format('Y-m-d H:i:s');
+
+        //If don't exist yet
         if (empty($vote)) {
-            return $this->voteNotFound();
+            $vote = new Vote();
+            $form = $this->createForm(VoteType::class, $vote);
+            $form->submit($data); // Data validation
+
+            if ($form->isValid()) {
+                $em = $this->get('doctrine.orm.entity_manager');
+                $em->persist($vote);
+                $em->flush();
+                return $vote;
+            } else {
+                return $form;
+            }
         }
 
-        $form = $this->createForm(VoteType::class, $vote);
+        $form = $this->createForm(VoteType::class, $vote[0]);
 
         // The false parameter tells Symfony
         // to keep the values in our entity
         // if the user does not supply one in a query
-        $data = $request->request->all();
-        //Default value
-        $data['ip'] = $request->getClientIp();
-        $today = new \DateTime();
-        $data['date'] = $today->format('Y-m-d H:i:s');
-        $form->submit($data, $clearMissing);
+        $form->submit($data, true);
 
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $em->persist($vote);
+            $em->persist($vote[0]);
             $em->flush();
             return $vote;
         } else {
             return $form;
         }
+
     }
 
     /**
@@ -223,9 +192,7 @@ class VoteController extends Controller {
         /* @var $vote Vote */
 
         if($vote) {
-            foreach ($vote as $v) {
-                $em->remove($v);
-            }
+            $em->remove($vote[0]);
             $em->flush();
         }
     }
