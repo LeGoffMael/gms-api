@@ -10,6 +10,8 @@ use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\ImageType;
 use AppBundle\Entity\Image;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcher;
 
 /**
  * ImageController short summary.
@@ -26,14 +28,51 @@ class ImageController extends Controller {
      * All Images
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Get("/images")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index of beginning of pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Number of items to display")
+     * @QueryParam(name="page", requirements="\d+", default="", description="The page to display")
+     * @QueryParam(name="top", requirements="[a-z]+", default="", description="If order by score")
      * @param Request $request
      * @return mixed
      */
-    public function getImagesAction(Request $request) {
-        $images = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Image')
-                ->findAll();
-        /* @var $images Image[] */
+    public function getImagesAction(Request $request, ParamFetcher $paramFetcher) {
+        $settings = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Settings')
+                ->find(1);
+
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $page = $paramFetcher->get('page');
+        $top = $paramFetcher->get('top');
+
+        $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
+        $qb->select('i')
+           ->from('AppBundle:Image', 'i');
+
+        //If page is set use default limit
+        if($page != "") {
+            $offset = $page * $settings->getLimitGallery() - $settings->getLimitGallery();
+            $limit = $settings->getLimitGallery();
+        }
+        if ($offset != "") {
+            $qb->setFirstResult($offset);
+        }
+        if ($limit != "") {
+            $qb->setMaxResults($limit);
+        }
+
+        //Order by score
+        if ($top == "true") {
+            $qb->addSelect('SUM(COALESCE(v.value,0)) AS HIDDEN score_image')
+                ->leftJoin('i.votes', 'v')
+                ->groupBy('i.id')
+                ->addOrderBy('score_image', 'DESC');
+        }
+
+        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.id', 'DESC');
+
+        $images = $qb->getQuery()->getResult();
 
         return $images;
     }
@@ -62,10 +101,14 @@ class ImageController extends Controller {
      * All Images of the Category
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Get("/categories/{id}/images")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index of beginning of pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Number of items to display")
+     * @QueryParam(name="page", requirements="\d+", default="", description="The page to display")
+     * @QueryParam(name="top", requirements="[a-z]+", default="", description="If order by score")
      * @param Request $request
      * @return mixed
      */
-    public function getCategoriesImagesAction(Request $request) {
+    public function getCategoriesImagesAction(Request $request, ParamFetcher $paramFetcher) {
         $category = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Category')
                 ->find($request->get('id'));
@@ -75,14 +118,46 @@ class ImageController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Category not found');
         }
 
-        $images = $this->get('doctrine.orm.entity_manager')
+        $settings = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:Settings')
+                ->find(1);
+
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $page = $paramFetcher->get('page');
+        $top = $paramFetcher->get('top');
+
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Image')
                 ->createQueryBuilder('i')
                 ->join('i.categories', 'c')
                 ->where('c.id = :id_categ')
-                ->setParameter('id_categ', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $images Image[] */
+                ->setParameter('id_categ', $request->get('id'));
+
+        //If page is set use default limit
+        if($page != "") {
+            $offset = $page * $settings->getLimitGallery() - $settings->getLimitGallery();
+            $limit = $settings->getLimitGallery();
+        }
+        if ($offset != "") {
+            $qb->setFirstResult($offset);
+        }
+        if ($limit != "") {
+            $qb->setMaxResults($limit);
+        }
+
+        //Order by score
+        if ($top == "true") {
+            $qb->addSelect('SUM(COALESCE(v.value,0)) AS HIDDEN score_image')
+                ->leftJoin('i.votes', 'v')
+                ->groupBy('i.id')
+                ->addOrderBy('score_image', 'DESC');
+        }
+
+        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.id', 'DESC');
+
+        $images = $qb->getQuery()->getResult();
 
         return $images;
     }
@@ -91,10 +166,14 @@ class ImageController extends Controller {
      * All Images of the Tag
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Get("/tags/{id}/images")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index of beginning of pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Number of items to display")
+     * @QueryParam(name="page", requirements="\d+", default="", description="The page to display")
+     * @QueryParam(name="top", requirements="[a-z]+", default="", description="If order by score")
      * @param Request $request
      * @return mixed
      */
-    public function getTagImagesAction(Request $request) {
+    public function getTagImagesAction(Request $request, ParamFetcher $paramFetcher) {
         $tag = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Tag')
                 ->find($request->get('id'));
@@ -104,14 +183,46 @@ class ImageController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Tag not found');
         }
 
-        $images = $this->get('doctrine.orm.entity_manager')
+        $settings = $this->get('doctrine.orm.entity_manager')
+         ->getRepository('AppBundle:Settings')
+         ->find(1);
+
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $page = $paramFetcher->get('page');
+        $top = $paramFetcher->get('top');
+
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Image')
                 ->createQueryBuilder('i')
                 ->join('i.tags', 't')
                 ->where('t.id = :id_tag')
-                ->setParameter('id_tag', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $images Image[] */
+                ->setParameter('id_tag', $request->get('id'));
+
+        //If page is set use default limit
+        if($page != "") {
+            $offset = $page * $settings->getLimitGallery() - $settings->getLimitGallery();
+            $limit = $settings->getLimitGallery();
+        }
+        if ($offset != "") {
+            $qb->setFirstResult($offset);
+        }
+        if ($limit != "") {
+            $qb->setMaxResults($limit);
+        }
+
+        //Order by score
+        if ($top == "true") {
+            $qb->addSelect('SUM(COALESCE(v.value,0)) AS HIDDEN score_image')
+                ->leftJoin('i.votes', 'v')
+                ->groupBy('i.id')
+                ->addOrderBy('score_image', 'DESC');
+        }
+
+        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.id', 'DESC');
+
+        $images = $qb->getQuery()->getResult();
 
         return $images;
     }
@@ -120,10 +231,14 @@ class ImageController extends Controller {
      * All Images of the User
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Get("/users/{id}/images")
+     * @QueryParam(name="offset", requirements="\d+", default="", description="Index of beginning of pagination")
+     * @QueryParam(name="limit", requirements="\d+", default="", description="Number of items to display")
+     * @QueryParam(name="page", requirements="\d+", default="", description="The page to display")
+     * @QueryParam(name="top", requirements="[a-z]+", default="", description="If order by score")
      * @param Request $request
      * @return mixed
      */
-    public function getUserImagesAction(Request $request) {
+    public function getUserImagesAction(Request $request, ParamFetcher $paramFetcher) {
         $user = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:User')
                 ->find($request->get('id'));
@@ -133,13 +248,41 @@ class ImageController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
-        $images = $this->get('doctrine.orm.entity_manager')
+        $offset = $paramFetcher->get('offset');
+        $limit = $paramFetcher->get('limit');
+        $page = $paramFetcher->get('page');
+        $top = $paramFetcher->get('top');
+
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Image')
                 ->createQueryBuilder('i')
                 ->where('i.user = :id_user')
-                ->setParameter('id_user', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $images Image[] */
+                ->setParameter('id_user', $request->get('id'));
+
+        //If page is set use default limit
+        if($page != "") {
+            $offset = $page * $settings->getLimitGallery() - $settings->getLimitGallery();
+            $limit = $settings->getLimitGallery();
+        }
+        if ($offset != "") {
+            $qb->setFirstResult($offset);
+        }
+        if ($limit != "") {
+            $qb->setMaxResults($limit);
+        }
+
+        //Order by score
+        if ($top == "true") {
+            $qb->addSelect('SUM(COALESCE(v.value,0)) AS HIDDEN score_image')
+                ->leftJoin('i.votes', 'v')
+                ->groupBy('i.id')
+                ->addOrderBy('score_image', 'DESC');
+        }
+
+        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.id', 'DESC');
+
+        $images = $qb->getQuery()->getResult();
 
         return $images;
     }

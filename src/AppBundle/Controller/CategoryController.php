@@ -28,10 +28,12 @@ class CategoryController extends Controller {
      * @return mixed
      */
     public function getCategoriesAction(Request $request) {
-        $categories = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Category')
-                ->findAll();
-        /* @var $categories Category[] */
+        $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
+        $qb->select('c')
+           ->from('AppBundle:Category', 'c');
+        $qb->orderBy('c.name', 'ASC');
+
+        $categories = $qb->getQuery()->getResult();
 
         return $categories;
     }
@@ -113,14 +115,16 @@ class CategoryController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('Image not found');
         }
 
-        $categories = $this->get('doctrine.orm.entity_manager')
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Category')
                 ->createQueryBuilder('c')
                 ->join('c.images', 'i')
                 ->where('i.id = :id_img')
-                ->setParameter('id_img', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $categories Category[] */
+                ->setParameter('id_img', $request->get('id'));
+
+        $qb->orderBy('c.name', 'ASC');
+
+        $categories = $qb->getQuery()->getResult();
 
         return $categories;
     }
@@ -142,13 +146,15 @@ class CategoryController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
-        $categories = $this->get('doctrine.orm.entity_manager')
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Category')
                 ->createQueryBuilder('c')
                 ->where('c.user = :id_user')
-                ->setParameter('id_user', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $categories Category[] */
+                ->setParameter('id_user', $request->get('id'));
+
+        $qb->orderBy('c.name', 'ASC');
+
+        $categories = $qb->getQuery()->getResult();
 
         return $categories;
     }

@@ -28,10 +28,12 @@ class TagController extends Controller {
      * @return mixed
      */
     public function getTagsAction(Request $request) {
-        $tags = $this->get('doctrine.orm.entity_manager')
-                ->getRepository('AppBundle:Tag')
-                ->findAll();
-        /* @var $tags Tag[] */
+        $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
+        $qb->select('t')
+           ->from('AppBundle:Tag', 't');
+        $qb->orderBy('t.name', 'ASC');
+
+        $tags = $qb->getQuery()->getResult();
 
         return $tags;
     }
@@ -73,14 +75,14 @@ class TagController extends Controller {
             return $this->imageNotFound();
         }
 
-        $tags = $this->get('doctrine.orm.entity_manager')
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Tag')
                 ->createQueryBuilder('t')
                 ->join('t.images', 'i')
                 ->where('i.id = :id_img')
-                ->setParameter('id_img', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $tags Tag[] */
+                ->setParameter('id_img', $request->get('id'));
+
+        $tags = $qb->getQuery()->getResult();
 
         return $tags;
     }
@@ -102,13 +104,13 @@ class TagController extends Controller {
             throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException('User not found');
         }
 
-        $tags = $this->get('doctrine.orm.entity_manager')
+        $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Tag')
                 ->createQueryBuilder('t')
                 ->where('t.user = :id_user')
-                ->setParameter('id_user', $request->get('id'))
-                ->getQuery()->getResult();
-        /* @var $tags Tag[] */
+                ->setParameter('id_user', $request->get('id'));
+
+        $tags = $qb->getQuery()->getResult();
 
         return $tags;
     }

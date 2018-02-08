@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
  * ImageType description.
  *
  * @version 1.0
- * @author Ma�l Le Goff
+ * @author Maël Le Goff
  */
 class ImageType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {      
