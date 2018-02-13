@@ -119,7 +119,7 @@ class VoteController extends Controller {
     /**
      * Insert or Full Update Vote with the specified ids
      * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"vote"})
-     * @Rest\Put("/votes/{ip}_{user}_{image}")
+     * @Rest\Put("/images/{image}/votes/{ip}_{user}")
      * @param Request $request
      * @return \AppBundle\Entity\Vote|\AppBundle\Form\Type\VoteType
      */
@@ -178,7 +178,7 @@ class VoteController extends Controller {
     /**
      * Delete Vote with the specified ids
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"vote"})
-     * @Rest\Delete("/votes/{ip}_{user}_{image}")
+     * @Rest\Delete("/votes/{image}/{ip}_{user}")
      * @param Request $request
      */
     public function removeVoteAction(Request $request) {

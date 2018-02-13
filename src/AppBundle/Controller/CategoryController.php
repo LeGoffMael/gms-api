@@ -9,6 +9,8 @@ use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\CategoryType;
 use AppBundle\Entity\Category;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcher;
 
 /**
  * CategoryController short summary.
@@ -24,14 +26,23 @@ class CategoryController extends Controller {
      * All Categories
      * @Rest\View(serializerGroups={"category"})
      * @Rest\Get("/categories")
+     * @QueryParam(name="search", requirements="[a-z]+", default="", description="Search term")
      * @param Request $request
      * @return mixed
      */
-    public function getCategoriesAction(Request $request) {
+    public function getCategoriesAction(Request $request, ParamFetcher $paramFetcher) {
         $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
         $qb->select('c')
-           ->from('AppBundle:Category', 'c');
-        $qb->orderBy('c.name', 'ASC');
+           ->from('AppBundle:Category', 'c')
+           ->orderBy('c.name', 'ASC');
+
+        $search = $paramFetcher->get('search');
+
+        //Search
+        if ($search != "") {
+            $qb->where('c.name LIKE :search')
+               ->setParameter('search', '%'.$search.'%');
+        }
 
         $categories = $qb->getQuery()->getResult();
 

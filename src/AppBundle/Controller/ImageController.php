@@ -32,6 +32,7 @@ class ImageController extends Controller {
      * @QueryParam(name="limit", requirements="\d+", default="", description="Number of items to display")
      * @QueryParam(name="page", requirements="\d+", default="", description="The page to display")
      * @QueryParam(name="top", requirements="[a-z]+", default="", description="If order by score")
+     * @QueryParam(name="search", requirements="[a-z]+", default="", description="Search term")
      * @param Request $request
      * @return mixed
      */
@@ -44,6 +45,7 @@ class ImageController extends Controller {
         $limit = $paramFetcher->get('limit');
         $page = $paramFetcher->get('page');
         $top = $paramFetcher->get('top');
+        $search = $paramFetcher->get('search');
 
         $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
         $qb->select('i')
@@ -67,6 +69,16 @@ class ImageController extends Controller {
                 ->leftJoin('i.votes', 'v')
                 ->groupBy('i.id')
                 ->addOrderBy('score_image', 'DESC');
+        }
+
+        //Search
+        if ($search != "") {
+            $qb->leftJoin('i.categories', 'c')
+               ->leftJoin('i.tags', 't')
+               ->where('i.description LIKE :search')
+               ->orWhere('c.name LIKE :search')
+               ->orWhere('t.name LIKE :search')
+               ->setParameter('search', '%'.$search.'%');
         }
 
         $qb->addOrderBy('i.date', 'DESC');

@@ -9,6 +9,8 @@ use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
 use AppBundle\Form\Type\TagType;
 use AppBundle\Entity\Tag;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcher;
 
 /**
  * TagController short summary.
@@ -24,14 +26,23 @@ class TagController extends Controller {
      * All Tags
      * @Rest\View(serializerGroups={"tag"})
      * @Rest\Get("/tags")
+     * @QueryParam(name="search", requirements="[a-z]+", default="", description="Search term")
      * @param Request $request
      * @return mixed
      */
-    public function getTagsAction(Request $request) {
+    public function getTagsAction(Request $request, ParamFetcher $paramFetcher) {
         $qb = $this->get('doctrine.orm.entity_manager')->createQueryBuilder();
         $qb->select('t')
            ->from('AppBundle:Tag', 't');
         $qb->orderBy('t.name', 'ASC');
+
+        $search = $paramFetcher->get('search');
+
+        //Search
+        if ($search != "") {
+            $qb->where('t.name LIKE :search')
+               ->setParameter('search', '%'.$search.'%');
+        }
 
         $tags = $qb->getQuery()->getResult();
 
