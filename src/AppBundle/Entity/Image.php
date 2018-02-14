@@ -30,9 +30,14 @@ class Image {
     protected $url;
 
     /**
-     * @ORM\Column(type="datetime", name="dateImage")
+     * @ORM\Column(type="datetime", name="createdAtImage")
      */
-    protected $date;
+    protected $createdAt;
+    
+    /**
+     * @ORM\Column(type="datetime", name="updatedAtImage")
+     */
+    protected $updatedAt;
 
     /**
      * @ORM\Column(type="string", name="descriptionImage")
@@ -59,10 +64,10 @@ class Image {
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="idUser", referencedColumnName="idUser")
+     * @ORM\JoinColumn(name="idCreatorImageUser", referencedColumnName="idUser")
      * @var User
      */
-    protected $user;
+    protected $creator;
 
     /**
      * @ORM\OneToMany(targetEntity="Vote", mappedBy="image")
@@ -98,11 +103,19 @@ class Image {
         return $this;
     }
 
-    public function getDate() {
-        return $this->date;
+    public function getCreatedAt() {
+        return $this->createdAt;
     }
-    public function setDate($date) {
-        $this->date = $date;
+    public function setCreatedAte($createdAt) {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+    
+    public function getUpdatedAt() {
+        return $this->updatedAt;
+    }
+    public function setUpdatedAt($updatedAt) {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
@@ -170,11 +183,11 @@ class Image {
         return $this->tags;
     }
 
-    public function getUser() {
-        return $this->user;
+    public function getCreator() {
+        return $this->creator;
     }
-    public function setUser($user) {
-        $this->user = $user;
+    public function setCreator($creator) {
+        $this->creator = $creator;
         return $this;
     }
 

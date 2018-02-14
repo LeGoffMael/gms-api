@@ -49,7 +49,9 @@ AppBundle\Entity\Image:
             groups: ['image', 'vote']
         url:
             groups: ['image', 'vote']
-        date:
+        createdAt:
+            groups: ['image', 'vote']
+        updatedAt:
             groups: ['image', 'vote']
         description:
             groups: ['image', 'vote']
@@ -57,7 +59,7 @@ AppBundle\Entity\Image:
             groups: ['image', 'vote']
         tags:
             groups: ['image', 'vote']
-        user:
+        creator:
             groups: ['image']
         score:
             groups: ['image', 'vote']

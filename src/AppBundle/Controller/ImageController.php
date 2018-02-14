@@ -81,7 +81,7 @@ class ImageController extends Controller {
                ->setParameter('search', '%'.$search.'%');
         }
 
-        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.createdAt', 'DESC');
         $qb->addOrderBy('i.id', 'DESC');
 
         $images = $qb->getQuery()->getResult();
@@ -166,7 +166,7 @@ class ImageController extends Controller {
                 ->addOrderBy('score_image', 'DESC');
         }
 
-        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.createdAt', 'DESC');
         $qb->addOrderBy('i.id', 'DESC');
 
         $images = $qb->getQuery()->getResult();
@@ -231,7 +231,7 @@ class ImageController extends Controller {
                 ->addOrderBy('score_image', 'DESC');
         }
 
-        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.createdAt', 'DESC');
         $qb->addOrderBy('i.id', 'DESC');
 
         $images = $qb->getQuery()->getResult();
@@ -291,7 +291,7 @@ class ImageController extends Controller {
                 ->addOrderBy('score_image', 'DESC');
         }
 
-        $qb->addOrderBy('i.date', 'DESC');
+        $qb->addOrderBy('i.createdAt', 'DESC');
         $qb->addOrderBy('i.id', 'DESC');
 
         $images = $qb->getQuery()->getResult();
@@ -313,7 +313,8 @@ class ImageController extends Controller {
         $data = $request->request->all();
         //Value by default
         $today = new \DateTime();
-        $data['date'] = $today->format('Y-m-d H:i:s');
+        $data['createdAt'] = $today->format('Y-m-d H:i:s');
+        unset($data['updatedAt']);
         // Add Categories
         if(array_key_exists('categories', $data)) {
             foreach($data['categories'] as $idCategory) {
@@ -394,7 +395,9 @@ class ImageController extends Controller {
 
         $data = $request->request->all();
         //Value by default
-        unset($data['date']);
+        $today = new \DateTime();
+        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
+        unset($data['createdAt']);
         // Update Categories
         if(array_key_exists('categories', $data)) {
             // Remove all Categories

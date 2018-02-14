@@ -6,12 +6,15 @@ AppBundle\Entity\Image:
             - NotBlank: ~
             - NotNull: ~
             - Type: string
-        date:
+        createdAt:
+            - Type: datetime
+            - NotBlank: ~
+        updatedAt:
             - Type: datetime
             - NotBlank: ~
         description:
             - Type: string
-        user:
+        creator:
             - Type: AppBundle\Entity\User
 
 AppBundle\Entity\Category:
@@ -118,6 +121,7 @@ AppBundle\Entity\Settings:
             - NotBlank: ~
             - Type: string
         limitGallery:
+            - NotBlank: ~
             - NotBlank: ~
             - Type: integer
         theme:

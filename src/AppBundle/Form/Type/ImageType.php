@@ -18,9 +18,10 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 class ImageType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {      
         $builder->add('url');
-        $builder->add('date', DateTimeType::class, array('widget' => 'single_text'));
+        $builder->add('createdAt', DateTimeType::class, array('widget' => 'single_text'));
+        $builder->add('updatedAt', DateTimeType::class, array('widget' => 'single_text'));
         $builder->add('description');
-        $builder->add('user');
+        $builder->add('creator');
     }
 
     public function configureOptions(OptionsResolver $resolver) {
