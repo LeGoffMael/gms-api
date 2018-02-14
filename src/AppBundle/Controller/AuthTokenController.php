@@ -29,16 +29,21 @@ class AuthTokenController extends Controller {
 
         $user = $em->getRepository('AppBundle:User')
             ->findOneByEmail($credentials->getLogin());
+        
+        if (!$user) { // The email does not exist
+            $user = $em->getRepository('AppBundle:User')
+            ->findOneByUsername($credentials->getLogin());
+        }
 
         if (!$user) { // The user does not exist
-            return $this->invalidCredentials();
+            $this->invalidCredentials();
         }
 
         $encoder = $this->get('security.password_encoder');
         $isPasswordValid = $encoder->isPasswordValid($user, $credentials->getPassword());
 
         if (!$isPasswordValid) { // The password is not correct
-            return $this->invalidCredentials();
+            $this->invalidCredentials();
         }
 
         $authToken = new AuthToken();
