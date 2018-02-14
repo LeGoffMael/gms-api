@@ -268,7 +268,7 @@ class ImageController extends Controller {
         $qb = $this->get('doctrine.orm.entity_manager')
                 ->getRepository('AppBundle:Image')
                 ->createQueryBuilder('i')
-                ->where('i.user = :id_user')
+                ->where('i.creator = :id_user')
                 ->setParameter('id_user', $request->get('id'));
 
         //If page is set use default limit

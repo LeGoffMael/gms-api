@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
  */
 class UserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name');
+        $builder->add('username');
         $builder->add('email', EmailType::class);
         $builder->add('plainPassword');
         $builder->add('createdAt', DateTimeType::class, array('widget' => 'single_text'));

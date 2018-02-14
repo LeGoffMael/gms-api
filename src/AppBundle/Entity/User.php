@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Ma�l Le Goff
  * @ORM\Entity()
  * @ORM\Table(name="users",
- *            uniqueConstraints={@ORM\UniqueConstraint(name="users_name_mail_unique",columns={"nameUser","emailUser","hashValidationUser","forgetPassUser"})}
+ *            uniqueConstraints={@ORM\UniqueConstraint(name="users_name_mail_unique",columns={"usernameUser","emailUser","hashValidationUser","forgetPassUser"})}
  * )
  */
 class User implements UserInterface {
@@ -25,9 +25,9 @@ class User implements UserInterface {
     protected $id;
 
     /**
-     * @ORM\Column(type="string", name="nameUser")
+     * @ORM\Column(type="string", name="usernameUser")
      */
-    protected $name;
+    protected $username;
 
     /**
      * @ORM\Column(type="string", name="emailUser")
@@ -80,11 +80,11 @@ class User implements UserInterface {
         return $this;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getUsername() {
+        return $this->username;
     }
-    public function setName($name) {
-        $this->name = $name;
+    public function setUsername($username) {
+        $this->username = $username;
         return $this;
     }
 
@@ -145,10 +145,6 @@ class User implements UserInterface {
     }
     public function setPlainPassword($plainPassword) {
         $this->plainPassword = $plainPassword;
-    }
-
-    public function getUsername() {
-        return $this->name;
     }
 
     public function getRoles() {

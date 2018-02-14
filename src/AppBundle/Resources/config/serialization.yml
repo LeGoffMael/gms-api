@@ -68,7 +68,7 @@ AppBundle\Entity\User:
     attributes:
         id:
             groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
-        name:
+        username:
             groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
         email:
             groups: ['user', 'vote', 'image', 'category', 'tag', 'auth-token']
