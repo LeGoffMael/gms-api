@@ -106,7 +106,7 @@ class Image {
     public function getCreatedAt() {
         return $this->createdAt;
     }
-    public function setCreatedAte($createdAt) {
+    public function setCreatedAt($createdAt) {
         $this->createdAt = $createdAt;
         return $this;
     }

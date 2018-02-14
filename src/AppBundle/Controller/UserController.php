@@ -71,8 +71,6 @@ class UserController extends Controller {
         //Value by default
         $today = new \DateTime();
         $data['createdAt'] = $today->format('Y-m-d H:i:s');
-        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
-        $data['updatedAt'] = $today->format('Y-m-d H:i:s');
         $data['role'] = 3;
         $form->submit($data); // Data validation
 

@@ -147,9 +147,10 @@ class User implements UserInterface {
         $this->plainPassword = $plainPassword;
     }
 
-    public function getRoles() {
-        //return $this->role;
-        return [];
+    public function getRoles() {/*
+        var_dump(array('ROLE_'.strtoupper($this->getRole()->getName())));
+        exit;*/
+        return array('ROLE_'.strtoupper($this->getRole()->getName()));
     }
 
     public function getSalt() {

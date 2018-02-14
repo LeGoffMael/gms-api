@@ -309,11 +309,14 @@ class ImageController extends Controller {
     public function postImageAction(Request $request) {
         $image = new Image();
         $form = $this->createForm(ImageType::class, $image);
+        
+        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
 
         $data = $request->request->all();
         //Value by default
         $today = new \DateTime();
         $data['createdAt'] = $today->format('Y-m-d H:i:s');
+        $data['creator'] = $connectedUser->getId();;
         unset($data['updatedAt']);
         // Add Categories
         if(array_key_exists('categories', $data)) {
@@ -396,8 +399,8 @@ class ImageController extends Controller {
         $data = $request->request->all();
         //Value by default
         $today = new \DateTime();
+        $data['createdAt'] = $image->getCreatedAt()->format('Y-m-d H:i:s');
         $data['updatedAt'] = $today->format('Y-m-d H:i:s');
-        unset($data['createdAt']);
         // Update Categories
         if(array_key_exists('categories', $data)) {
             // Remove all Categories
@@ -458,6 +461,8 @@ class ImageController extends Controller {
      * @param Request $request
      */
     public function removeImageAction(Request $request) {
+        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+        
         $em = $this->get('doctrine.orm.entity_manager');
         $image = $em->getRepository('AppBundle:Image')
                     ->find($request->get('id'));

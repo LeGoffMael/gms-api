@@ -20,6 +20,13 @@ security:
                 authenticator: auth_token_authenticator
             provider: auth_token_user_provider
             anonymous: ~
+            
+    role_hierarchy:
+        ROLE_WRITER: ROLE_READER
+        ROLE_ADMIN: ROLE_WRITER
+            
+    access_control:
+        - { path: ^/images, roles: ROLE_WRITER, methods: [POST, PUT] }
 
     encoders:
         AppBundle\Entity\User:

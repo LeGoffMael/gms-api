@@ -29,7 +29,7 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
         $targetUrl = '/auth-tokens';
         $userUrl = '/users';
 
-        // If the request is a token creation or user creation or a GET method, no check is performed
+        // If the request is a token creation or an user creation or a GET method, no check is performed
         if (($request->getMethod() === "GET") || ($request->getMethod() === "POST" && ($this->httpUtils->checkRequestPath($request, $targetUrl) || $this->httpUtils->checkRequestPath($request, $userUrl)))) {
             return;
         }
@@ -90,7 +90,7 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception) {
-        // Si les donn�es d'identification ne sont pas correctes, une exception est lev�e
+        // If the credentials are not corrected, an exception is thrown
         throw $exception;
     }
 }
