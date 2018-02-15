@@ -9,10 +9,6 @@ security:
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
             pattern: ^/
             stateless: true
@@ -20,16 +16,15 @@ security:
                 authenticator: auth_token_authenticator
             provider: auth_token_user_provider
             anonymous: ~
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
             
     role_hierarchy:
         ROLE_WRITER: ROLE_READER
         ROLE_ADMIN: ROLE_WRITER
-            
-    access_control:
-        - { path: ^/images, roles: ROLE_WRITER, methods: [POST, PUT] }
 
     encoders:
         AppBundle\Entity\User:
             algorithm: bcrypt
             cost: 12
-

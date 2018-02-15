@@ -12,6 +12,7 @@ use AppBundle\Form\Type\ImageType;
 use AppBundle\Entity\Image;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * ImageController short summary.
@@ -304,6 +305,7 @@ class ImageController extends Controller {
      * Insert new Image
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"image"})
      * @Rest\Post("/images")
+     * @Security("has_role('ROLE_WRITER')")
      * @param Request $request
      */
     public function postImageAction(Request $request) {
@@ -361,6 +363,8 @@ class ImageController extends Controller {
      * Full Update Image with the specified id
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Put("/images/{id}")
+     * @param Request $request
+     * @return mixed|\AppBundle\Entity\Image|\FOS\RestBundle\View\View|\Symfony\Component\Form\Form
      */
     public function putImageAction(Request $request) {
         return $this->updateImage($request, true);
@@ -372,7 +376,7 @@ class ImageController extends Controller {
      * @Rest\View(serializerGroups={"image"})
      * @Rest\Patch("/images/{id}")
      * @param Request $request
-     * @return mixed
+     * @return mixed|\AppBundle\Entity\Image|\FOS\RestBundle\View\View|\Symfony\Component\Form\Form
      */
     public function patchImageAction(Request $request) {
         return $this->updateImage($request, false);
@@ -461,7 +465,7 @@ class ImageController extends Controller {
      * @param Request $request
      */
     public function removeImageAction(Request $request) {
-        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
         
         $em = $this->get('doctrine.orm.entity_manager');
         $image = $em->getRepository('AppBundle:Image')
