@@ -12,8 +12,6 @@ use AppBundle\Form\Type\ImageType;
 use AppBundle\Entity\Image;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * ImageController short summary.
@@ -306,7 +304,6 @@ class ImageController extends Controller {
      * Insert new Image
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"image"})
      * @Rest\Post("/images")
-     * @Security("has_role('ROLE_WRITER')")
      * @param Request $request
      */
     public function postImageAction(Request $request) {

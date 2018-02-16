@@ -124,6 +124,12 @@ class UserController extends Controller {
         if (empty($user)) {
             return $this->userNotFound();
         }
+        
+        //If the current user isn't an Admin AND isn't the user to updated
+        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+        if($connectedUser->getId() != $user->getId()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
 
         if ($clearMissing) { // If a full update, the password must be validated
             $options = ['validation_groups'=>['Default', 'FullUpdate']];
@@ -166,14 +172,19 @@ class UserController extends Controller {
      * @Rest\Delete("/users/{id}")
      * @param Request $request
      */
-    public function removeUserAction(Request $request)
-    {
+    public function removeUserAction(Request $request) {
         $em = $this->get('doctrine.orm.entity_manager');
         $user = $em->getRepository('AppBundle:User')
                   ->find($request->get('id'));
         /* @var $user User */
+                  
+        //If the current user isn't an Admin AND isn't the user to updated
+        $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+        if($connectedUser->getId() != $user->getId()) {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+        }
 
-       if($user) {
+        if($user) {
             $em->remove($user);
             $em->flush();
         }
