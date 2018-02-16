@@ -4,36 +4,45 @@ app:
 
 images:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\ImageController
 
 categories:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\CategoryController
 
 tags:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\TagController
     
 roles:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\RoleController
     
 users:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\UserController
 
 themes:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\ThemeController
 
 settings:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\SettingsController
 
 votes:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\VoteController
 
 auth-tokens:
     type:     rest
+    prefix:   /api
     resource: AppBundle\Controller\AuthTokenController

@@ -9,16 +9,19 @@ security:
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
-        main:
-            pattern: ^/
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        api:
+            pattern: ^/api
             stateless: true
             simple_preauth:
                 authenticator: auth_token_authenticator
             provider: auth_token_user_provider
             anonymous: ~
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        main:
+            pattern: ^/
+            anonymous: true
             
     role_hierarchy:
         ROLE_WRITER: ROLE_READER
