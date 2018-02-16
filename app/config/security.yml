@@ -19,6 +19,7 @@ security:
                 authenticator: auth_token_authenticator
             provider: auth_token_user_provider
             anonymous: ~
+            http_basic: ~
         main:
             pattern: ^/
             anonymous: true
@@ -31,6 +32,20 @@ security:
         - { path: ^/images, roles: ROLE_WRITER, methods: [POST] }
         - { path: /images, roles: ROLE_WRITER, methods: [PUT, PATCH] }
         - { path: /images, roles: ROLE_ADMIN, methods: [DELETE] }
+        
+        - { path: ^/categories, roles: ROLE_WRITER, methods: [POST] }
+        - { path: /categories, roles: ROLE_WRITER, methods: [PUT, PATCH] }
+        - { path: /categories, roles: ROLE_ADMIN, methods: [DELETE] }
+        
+        - { path: ^/tags, roles: ROLE_WRITER, methods: [POST] }
+        - { path: /tags, roles: ROLE_WRITER, methods: [PUT, PATCH] }
+        - { path: /tags, roles: ROLE_ADMIN, methods: [DELETE] }
+        
+        - { path: ^/themes, roles: ROLE_ADMIN, methods: [POST] }
+        - { path: /themes, roles: ROLE_ADMIN, methods: [PUT, PATCH, DELETE] }
+        
+        - { path: ^/settings, roles: ROLE_ADMIN, methods: [POST] }
+        - { path: /settings, roles: ROLE_ADMIN, methods: [PUT, PATCH, DELETE] }
 
     encoders:
         AppBundle\Entity\User:

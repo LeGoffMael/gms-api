@@ -25,12 +25,16 @@ class AuthTokenAuthenticator implements SimplePreAuthenticatorInterface, Authent
     }
 
     public function createToken(Request $request, $providerKey) {
-
-        $targetUrl = '/auth-tokens';
-        $userUrl = '/users';
-
+        $targetUrl = '/api/auth-tokens';
+        $usersUrl = '/api/users';
+        $votesUrl = '/api/images/'.$request->get('id').'/votes';
+        
         // If the request is a token creation or an user creation or a GET method, no check is performed
-        if (($request->getMethod() === "GET") || ($request->getMethod() === "POST" && ($this->httpUtils->checkRequestPath($request, $targetUrl) || $this->httpUtils->checkRequestPath($request, $userUrl)))) {
+        if (($request->getMethod() === "GET") || ($request->getMethod() === "POST" && ($this->httpUtils->checkRequestPath($request, $targetUrl) || $this->httpUtils->checkRequestPath($request, $usersUrl)))) {
+            return;
+        }
+        // If the request in for votes
+        if((($request->getMethod() === "PUT" || $request->getMethod() === "DELETE") && $this->httpUtils->checkRequestPath($request, $votesUrl))) {
             return;
         }
 

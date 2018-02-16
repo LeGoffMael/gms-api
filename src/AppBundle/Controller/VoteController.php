@@ -16,7 +16,7 @@ use AppBundle\Entity\Vote;
  * VoteController description.
  *
  * @version 1.0
- * @author Maël Le Goff
+ * @author Maï¿½l Le Goff
  */
 class VoteController extends Controller {
 
@@ -119,7 +119,7 @@ class VoteController extends Controller {
     /**
      * Insert or Full Update Vote with the specified ids
      * @Rest\View(statusCode=Response::HTTP_OK, serializerGroups={"vote"})
-     * @Rest\Put("/images/{image}/votes/{ip}_{user}")
+     * @Rest\Put("/images/{id}/votes")
      * @param Request $request
      * @return \AppBundle\Entity\Vote|\AppBundle\Form\Type\VoteType
      */
@@ -129,18 +129,21 @@ class VoteController extends Controller {
                 ->findBy(array(
                     'ip' => $request->get('ip'),
                     'user' => $request->get('user'),
-                    'image' => $request->get('image')
+                    'image' => $request->get('id')
                 ));
         /* @var $vote Vote */
 
         $data = $request->request->all();
-        //Default value
-        $data['ip'] = $request->get('ip');
-        $data['user'] = $request->get('user');
+        //Default value    
+        if (!(true === $authChecker->isGranted('ROLE_ADMIN') && array_key_exists($data['ip']) && array_key_exists($data['user']))) {
+            $connectedUser = $this->get('security.token_storage')->getToken()->getUser();
+            $data['ip'] = $request->getClientIp();
+            $data['user'] = $connectedUser->getId();
+        }
         $data['image'] = $request->get('image');
         $today = new \DateTime();
         $data['date'] = $today->format('Y-m-d H:i:s');
-
+        
         //If don't exist yet
         if (empty($vote)) {
             $vote = new Vote();
@@ -172,13 +175,12 @@ class VoteController extends Controller {
         } else {
             return $form;
         }
-
     }
 
     /**
      * Delete Vote with the specified ids
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT, serializerGroups={"vote"})
-     * @Rest\Delete("/votes/{image}/{ip}_{user}")
+     * @Rest\Delete("/images/{id}/votes")
      * @param Request $request
      */
     public function removeVoteAction(Request $request) {
@@ -187,7 +189,7 @@ class VoteController extends Controller {
                 ->findBy(array(
                     'ip' => $request->get('ip'),
                     'user' => $request->get('user'),
-                    'image' => $request->get('image')
+                    'image' => $request->get('id')
                 ));
         /* @var $vote Vote */
 
