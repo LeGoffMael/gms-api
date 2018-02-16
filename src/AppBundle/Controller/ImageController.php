@@ -406,6 +406,7 @@ class ImageController extends Controller {
         $today = new \DateTime();
         $data['createdAt'] = $image->getCreatedAt()->format('Y-m-d H:i:s');
         $data['updatedAt'] = $today->format('Y-m-d H:i:s');
+        $data['creator'] = $image->getCreator()->getId();
         // Update Categories
         if(array_key_exists('categories', $data)) {
             // Remove all Categories
@@ -466,8 +467,6 @@ class ImageController extends Controller {
      * @param Request $request
      */
     public function removeImageAction(Request $request) {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
-        
         $em = $this->get('doctrine.orm.entity_manager');
         $image = $em->getRepository('AppBundle:Image')
                     ->find($request->get('id'));
@@ -479,6 +478,9 @@ class ImageController extends Controller {
             }
             foreach ($image->getTags() as $tag) {
                 $image->removeTag($tag);
+            }
+            foreach ($image->getVotes() as $vote) {
+                $image->removeVote($vote);
             }
             $em->remove($image);
             $em->flush();

@@ -26,6 +26,11 @@ security:
     role_hierarchy:
         ROLE_WRITER: ROLE_READER
         ROLE_ADMIN: ROLE_WRITER
+        
+    access_control:
+        - { path: ^/images, roles: ROLE_WRITER, methods: [POST] }
+        - { path: /images, roles: ROLE_WRITER, methods: [PUT, PATCH] }
+        - { path: /images, roles: ROLE_ADMIN, methods: [DELETE] }
 
     encoders:
         AppBundle\Entity\User:
